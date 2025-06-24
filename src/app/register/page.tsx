@@ -50,7 +50,7 @@ export default function RegisterPage() {
             bg-white
           "
         >
-          <h1 className="mb-3 text-gray-700 text-2xl font-semibold">Register</h1>
+          <h1 className="mb-3 text-gray-700 text-2xl font-semibold">Sign Up</h1>
           <p className="mb-6 text-gray-700 text-sm">
             Already have an account? Then please{" "}
             <Link href="/accounts/login/" className="text-indigo-600 hover:underline">
@@ -216,6 +216,11 @@ export default function RegisterPage() {
             >
               Register
             </button>
+            {successMessage && (
+  <p className="text-green-600 font-medium text-sm pt-2 text-center">
+    {successMessage}
+  </p>
+)}
           </form>
         </div>
       </div>

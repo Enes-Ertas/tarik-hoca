@@ -1,4 +1,16 @@
-const HeroSection: React.FC = () => {
+ 'use client';
+ import { useRouter } from 'next/navigation';
+ import { supabase } from '@/lib/supabaseClient';
+    import React from 'react';
+
+
+ const HeroSection: React.FC = () => {
+   const router = useRouter();
+   const handleQuestionBankClick = async () => {
+     const { data: { session } } = await supabase.auth.getSession();
+     if (session) router.push('/questionbank');
+     else         router.push('/login');
+   };
   return (
     <div className="min-h-[55vh] bg-gradient-to-r from-indigo-500 to-purple-500 flex flex-col justify-center items-center text-center text-white px-4">
       <h1 className="text-4xl md:text-5xl font-bold">
@@ -7,6 +19,7 @@ const HeroSection: React.FC = () => {
       <p className="mt-4 text-lg">More than <strong>12,000</strong> questions</p>
       <div className="mt-6 flex flex-col gap-4 w-full max-w-md">
     <button
+    onClick={handleQuestionBankClick}
   className="
     inline-flex h-12 min-h-12 shrink-0 cursor-pointer select-none
     flex-wrap items-center justify-center rounded-lg px-4

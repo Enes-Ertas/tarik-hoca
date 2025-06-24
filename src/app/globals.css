@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,8 +24,40 @@
   }
 }
 
+
+/* === Buton POP animasyonu === */
+@keyframes button-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.button-pop:active {
+  transform: scale(0.94);
+}
+
+.button-pop {
+  animation: button-pop 0.25s ease-out;
+}
+
+
+
+html{
+  -webkit-font-smoothing: antialiased; /* MacOS ve iOS için */
+  -moz-osx-font-smoothing: grayscale;  /* Firefox için */
+  text-rendering: optimizeLegibility;  /* Daha net görünüm */
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  padding-top: 4.5rem;
+
 }

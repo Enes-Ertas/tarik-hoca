@@ -33,22 +33,27 @@ export default function QuestionChoices({
       {options.map((opt) => {
         const isSelected = opt.letter === selectedOption;
         const isWrong = wrongOptions.includes(opt.letter);
+        const isCorrectOption = opt.letter === questions[currentIndex]?.correct_option;
 
         return (
           <div
             key={opt.letter}
             className={`flex flex-row items-center p-3 rounded-xl border ${
-              isSelected
-                ? "border-[#4A00FF]" // Şu an seçilen
+              isCorrectAnswerFound === true && isCorrectOption
+                ? "border-[#00A96E]" // Doğru cevap yeşil
+                : isSelected
+                ? "border-[#4A00FF]" // Seçilen
                 : isWrong
-                ? "border-[#FF5861]" // Daha önce yanlış seçilen
+                ? "border-[#FF5861]" // Yanlış seçilen
                 : "border-neutral"
             }`}
           >
             <div
               onClick={() => setSelectedOption(opt.letter)}
               className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-pointer ${
-                isSelected
+                isCorrectAnswerFound === true && isCorrectOption
+                  ? "bg-[#00A96E] border-[#00A96E] text-white"
+                  : isSelected
                   ? "bg-[#4A00FF] border-[#4A00FF] text-white"
                   : isWrong
                   ? "bg-[#FF5861] border-[#FF5861] text-white"

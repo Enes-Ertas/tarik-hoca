@@ -65,7 +65,7 @@ export default function RegisterPage() {
                 className="
                   w-full px-3 py-2
                   border border-gray-300 rounded-md
-                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-[#4A00FF]
                 "
               />
             </div>
@@ -87,7 +87,7 @@ export default function RegisterPage() {
                   w-full px-3 py-2
                   border border-gray-300 rounded-md
                   focus:outline-none focus:ring-2 focus:ring-indigo-300
-                  text-gray-700
+                 text-[#4A00FF]
                 "
               />
             </div>
@@ -108,7 +108,7 @@ export default function RegisterPage() {
                 className="
                   w-full px-3 py-2
                   border border-gray-300 rounded-md
-                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-[#4A00FF]
                 "
               />
             </div>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                 className="
                   w-full px-3 py-2
                   border border-gray-300 rounded-md
-                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-[#4A00FF]
                 "
               />
             </div>
@@ -152,7 +152,7 @@ export default function RegisterPage() {
                 className="
                   w-full px-3 py-2
                   border border-gray-300 rounded-md
-                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-[#4A00FF]
                 "
               />
             </div>
@@ -172,7 +172,7 @@ export default function RegisterPage() {
                 className="
                   w-full px-3 py-2
                   border border-gray-300 rounded-md
-                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700
+                  focus:outline-none focus:ring-2 focus:ring-indigo-300 text-[#4A00FF]
                 "
               />
             </div>

@@ -209,7 +209,8 @@ href="/"
 </Link>
 
 
-                <button
+                <Link
+                href="/login"
   className="
     bg-[#0069FF]
     text-white
@@ -227,7 +228,7 @@ href="/"
     hover:cursor-pointer
     font-sans
   "
->Login</button>
+>Login</Link>
       </div>
     </header>
   );

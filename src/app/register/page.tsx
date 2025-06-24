@@ -13,6 +13,7 @@ export default function RegisterPage() {
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
     const handleSubmit = async  (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,11 +28,14 @@ export default function RegisterPage() {
       password: password1,
     });
     if (signUpError) {
-      setError(signUpError.message);
-      alert("E-mail error")
-    } else {
-      router.push("/login");
-    }
+  setError(signUpError.message);
+  alert("E-mail error");
+} else {
+  setSuccessMessage("✅ Please verify your email. Check your inbox.");
+  setEmail("");
+  setPassword1("");
+  setPassword2("");
+}
   };
   return (
     <main className="min-h-screen bg-gray-200 flex flex-col items-center p-4">
@@ -215,6 +219,11 @@ export default function RegisterPage() {
           </form>
         </div>
       </div>
+      {successMessage && (
+  <div className="text-green-600 font-medium text-sm pt-2">
+    {successMessage}
+  </div>
+)}
 
       <div className="mt-3 text-sm text-gray-700 flex flex-col items-center gap-3 md:flex-row">
         <Link href="/accounts/login/" className="hover:underline">

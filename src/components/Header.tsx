@@ -2,11 +2,27 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import type { Session } from '@supabase/supabase-js';
+import ProfileButton from './ProfileButton';
 
 const Header: React.FC = () => {
     const router = useRouter();
   const triggerAllButtonPopsRef = useRef<() => void>(() => {});
+
+  const [session, setSession] = useState<null | Session>(null);
+  useEffect(() => {
+    // initial session
+    supabase.auth.getSession().then(({ data }) => setSession(data.session));
+    // listen for changes
+    const { data: listener } = supabase.auth.onAuthStateChange((_, s) => {
+      setSession(s);
+    });
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     // Bu sadece client tarafında çalışacak
@@ -186,10 +202,18 @@ href="/"
 
       </nav>
       <div className="flex gap-2">
-     <Link
-  href="/register"
-  className="
-    bg-[#463AA2]
+
+
+
+
+
+  {session ? (
+<ProfileButton/>
+  ) : (
+    <>
+      <Link
+        href="/register"
+        className="bg-[#463AA2]
     text-white
     px-4 py-2
     rounded-lg
@@ -202,17 +226,13 @@ href="/"
     button-pop
     hover:cursor-pointer
     font-sans
-    inline-flex items-center justify-center
-  "
->
-  Register
-</Link>
-
-
-                <Link
-                href="/login"
-  className="
-    bg-[#0069FF]
+    inline-flex items-center justify-center"
+      >
+        Register
+      </Link>
+      <Link
+        href="/login"
+        className="bg-[#0069FF]
     text-white
     px-4 py-2
     rounded-lg
@@ -226,9 +246,12 @@ href="/"
     px-4
     py-4
     hover:cursor-pointer
-    font-sans
-  "
->Login</Link>
+    font-sans"
+      >
+        Login
+      </Link>
+    </>
+  )}
       </div>
     </header>
   );

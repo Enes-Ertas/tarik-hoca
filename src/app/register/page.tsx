@@ -3,23 +3,35 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
 
 export default function RegisterPage() {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [error, setError] = useState("");
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async  (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (password1 !== password2) {
-      setError("Şifreler eşleşmiyor!");
-      alert("Şifreler eşleşmiyor")
+      setError("Passwords do not match!");
+      alert("Passwords do not match!")
       return;
     }
     setError("");
-    // TODO: API çağrısı vs.
-    alert("Kayıt başarılı!");
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password: password1,
+    });
+    if (signUpError) {
+      setError(signUpError.message);
+      alert("E-mail error")
+    } else {
+      router.push("/login");
+    }
   };
   return (
     <main className="min-h-screen bg-gray-200 flex flex-col items-center p-4">
@@ -105,6 +117,8 @@ export default function RegisterPage() {
                 name="email"
                 type="email"
                 required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
                 className="
                   w-full px-3 py-2
                   border border-gray-300 rounded-md

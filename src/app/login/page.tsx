@@ -3,22 +3,35 @@
 import Header from "@/components/Header";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
 export default function LoginPage() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
   const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!login || !password) {
-      setError("Lütfen tüm alanları doldurun!");
+      setError("Please fill in all fields!");
       return;
     }
     setError("");
-    // TODO: gerçek API çağrısı
-    alert("Giriş başarılı!");
+    // Supabase ile giriş denemesi
+    const { error: supaError } = await supabase.auth.signInWithPassword({
+      email: login,
+      password,
+    });
+    if (supaError) {
+      setError(supaError.message);
+      return;
+    }
+
+    // Başarılıysa ana sayfaya yönlendir
+    router.push("/");
   };
 
   return (
@@ -40,7 +53,7 @@ export default function LoginPage() {
           <p className="text-sm text-gray-700 mb-6">
             If you have not created an account yet, then please sign up first.{" "}
             <Link
-              href="/accounts/signup"
+              href="/signup"
               className="text-indigo-600 hover:underline"
             >
               Sign Up

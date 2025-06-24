@@ -2,11 +2,18 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import {QuestionType} from "@/app/types/types"
+import QuestionChoices from "@/components/QuestionChoices";
 
 
 export default function QuestionBankPage() {
 const [questions, setQuestions] = useState<QuestionType[]>([]);
 const [currentIndex, setCurrentIndex] = useState(0);
+const [isModalOpen, setIsModalOpen] = useState(false);
+const [selectedOption, setSelectedOption] = useState<string | null>(null);
+const [isTrue, setIsTrue] = useState<boolean | null>(null);
+const [wrongOption, setWrongOption] = useState<string | null>(null); 
+
+
 useEffect(() => {
   const fetchQuestions = async () => {
     const { data, error } = await supabase.from("questions").select("*").order("created_at", { ascending: true });
@@ -18,6 +25,37 @@ useEffect(() => {
   };
   fetchQuestions();
 }, []);
+
+const correctOption = questions[currentIndex]?.correct_option;
+
+
+let checkButtonBg = "bg-gray-500 border-gray-700 text-[#E5E5ED]";
+let checkButtonText = "Check";
+
+if (isTrue === true) {
+  checkButtonBg = "bg-[#00A96E] border-[#00A96E] text-white";
+  checkButtonText = "Correct"; // Doğru bilindiyse
+} else if (isTrue === false) {
+  checkButtonBg = "bg-[#FF5861] border-[#FF5861] text-white";
+  checkButtonText = "Check Again"; // Yanlış bilindiyse
+} else if (selectedOption) {
+  checkButtonBg = "bg-[#4A00FF] border-[#4A00FF] text-white"; // Şık seçildiyse
+}
+
+
+
+
+const handleCheckClick = () => {
+  if (!selectedOption) return;
+   if (selectedOption === correctOption) {
+     setIsTrue(true);
+    setWrongOption(null); // doğruysa yanlış sıfırlansın
+   } else {
+     setIsTrue(false);
+    setWrongOption(selectedOption); // yanlış seçilen option
+  }
+};
+
   return (
     <main className="min-h-screen flex flex-col md:flex-row p-6 gap-6 text-[#1F2955] bg-white">
       {/* Sol Panel */}
@@ -47,19 +85,30 @@ useEffect(() => {
         </div>
 
         <div className="bg-white p-4 rounded shadow text-base space-y-3">
-          <h2 className="font-semibold">
-            Based on the text, what can be concluded about the diminishing popularity of the portrait miniature in the nineteenth century?
-          </h2>
-          <ul className="space-y-2">
-            <li className="border p-3 rounded hover:bg-gray-100 cursor-pointer">🅐 Factors other than the rise of photography may be more directly responsible for the portrait miniature’s decline.</li>
-            <li className="border p-3 rounded hover:bg-gray-100 cursor-pointer">🅑 Although portrait miniatures became less common than photographs, they were widely regarded as having more artistic merit.</li>
-            <li className="border p-3 rounded hover:bg-gray-100 cursor-pointer">🅒 The popularity of the portrait miniature likely persisted for longer than art historians have assumed.</li>
-            <li className="border p-3 rounded hover:bg-gray-100 cursor-pointer">🅓 As demand for portrait miniatures decreased, portrait artists likely shifted their creative focus to photography.</li>
-          </ul>
+
+          {questions.length > 0 && (
+        <QuestionChoices
+        wrongOption={wrongOption}
+        isTrue={isTrue}
+  questions={questions}
+  currentIndex={currentIndex}
+  isModalOpen={isModalOpen}
+  onCloseModal={() => setIsModalOpen(false)}
+  selectedOption={selectedOption}
+  setSelectedOption={setSelectedOption}
+/>
+          )}
         </div>
 
         <div className="flex justify-between items-center">
-          <button className="bg-pink-500 text-white font-semibold px-4 py-2 rounded shadow">Explanation</button>
+
+          
+          <button className="bg-pink-500       inline-flex items-center px-4 py-2
+      text-[#E5E5ED]  border border-pink-500 rounded-lg
+      font-semibold text-sm hover:opacity-80 cursor-pointer"
+      onClick={() => setIsModalOpen(true)}>Explanation</button>
+
+
          <div className="flex items-center justify-center gap-x-2">
   {/* Previous butonu */}
   <button
@@ -118,13 +167,40 @@ useEffect(() => {
   </button>
 
   {/* Check butonu */}
-  <button className="px-3 py-2 bg-gray-400 text-white rounded cursor-not-allowed">
-    Check
-  </button>
+<button
+  onClick={handleCheckClick}
+  disabled={!selectedOption}
+  className={`
+    inline-flex items-center px-4 py-2 font-semibold text-sm gap-x-1
+    border rounded-lg cursor-pointer
+    ${selectedOption ? checkButtonBg : 'bg-gray-500 border-gray-700 text-[#E5E5ED]'}
+    ${!selectedOption ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'}
+  `}
+>
+  {checkButtonText}
+</button>
+
 </div>
 
         </div>
       </section>
+      {isModalOpen && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white p-6 rounded-xl shadow-lg max-w-2xl w-full relative animate-modal-open">
+      <button
+        onClick={() => setIsModalOpen(false)}
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+      >
+        ✕
+      </button>
+      <h2 className="text-xl font-bold mb-4 ">Explanation</h2>
+      <p className="text-sm text-[#1F2955] max-h-[70vh] overflow-y-auto pr-2 leading-6 ">
+        {questions[currentIndex]?.explanation}
+      </p>
+    </div>
+  </div>
+)}
+
     </main>
   );
 }

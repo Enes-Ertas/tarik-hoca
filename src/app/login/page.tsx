@@ -144,17 +144,18 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <button
-              type="submit"
-              className="
-                w-full py-3
-                bg-indigo-600 text-white font-medium
-                rounded-md hover:bg-indigo-700
-                transition-colors
-              "
-            >
-              Login
-            </button>
+           <button
+  type="submit"
+  className="
+    w-full py-3
+    bg-indigo-600 text-white font-medium
+    rounded-md hover:bg-indigo-700 cursor-pointer
+    transition-all duration-150 active:scale-95
+  "
+>
+  Login
+</button>
+
           </form>
         </div>
       </div>

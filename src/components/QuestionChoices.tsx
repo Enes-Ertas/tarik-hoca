@@ -50,7 +50,7 @@ export default function QuestionChoices({
           >
             <div
               onClick={() => setSelectedOption(opt.letter)}
-              className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-pointer ${
+              className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-auto ${
                 isCorrectAnswerFound === true && isCorrectOption
                   ? "bg-[#00A96E] border-[#00A96E] text-white"
                   : isSelected

@@ -27,6 +27,13 @@ useEffect(() => {
   fetchQuestions();
 }, []);
 
+useEffect(() => {
+  // Yeni soruya geçildiğinde durumları sıfırla
+  setSelectedOption(null);
+  setIsCorrectAnswerFound(null);
+  setWrongOptions([]);
+}, [currentIndex]);
+
 const correctOption = questions[currentIndex]?.correct_option;
 
 

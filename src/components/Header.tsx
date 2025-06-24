@@ -228,7 +228,7 @@ href="/"
     font-sans
     inline-flex items-center justify-center"
       >
-        Register
+        Sign Up
       </Link>
       <Link
         href="/login"

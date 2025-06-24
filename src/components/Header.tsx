@@ -1,26 +1,33 @@
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 
 const Header: React.FC = () => {
     const router = useRouter();
-    const triggerAllButtonPops = () => {
-  const buttons = document.querySelectorAll('.button-pop');
+  const triggerAllButtonPopsRef = useRef<() => void>(() => {});
 
-  buttons.forEach((btn) => {
-    btn.classList.remove('button-pop');
-    void (btn as HTMLElement).offsetWidth; // reflow tetikle
-    btn.classList.add('button-pop');
-  });
-};
+  useEffect(() => {
+    // Bu sadece client tarafında çalışacak
+    triggerAllButtonPopsRef.current = () => {
+      const buttons = document.querySelectorAll('.button-pop');
+      buttons.forEach((btn) => {
+        btn.classList.remove('button-pop');
+        void (btn as HTMLElement).offsetWidth;
+        btn.classList.add('button-pop');
+      });
+    };
+  }, []);
   return (
     <header className="bg-[#E3E9F4] py-3 px-6 flex justify-between items-center fixed top-0 left-0 w-full">
-<button
-  onClick={() => window.location.href = '/'}
+<Link
+href="/"
+   onClick={() => triggerAllButtonPopsRef.current()}
   className="text-[#394E6A] font-bold text-lg border border-transparent bg-transparent shadow-none outline-current rounded-lg transition-colors duration-200 hover:bg-slate-300 px-3 py-1.5 cursor-pointer button-pop"
 >
   Tarık Hoca
-</button>
+</Link>
 
 
       <nav className="hidden md:flex gap-8 text-sm text-[#394E6A]">
@@ -179,7 +186,8 @@ const Header: React.FC = () => {
 
       </nav>
       <div className="flex gap-2">
-        <button
+     <Link
+  href="/register"
   className="
     bg-[#463AA2]
     text-white
@@ -187,19 +195,19 @@ const Header: React.FC = () => {
     rounded-lg
     text-sm
     shadow-sm
-    font-weight: 400
+    font-medium
     transition-transform duration-200
     active:scale-95
     hover:bg-[#3C318C]
     button-pop
-    px-4
-    py-4
     hover:cursor-pointer
     font-sans
+    inline-flex items-center justify-center
   "
 >
   Register
-</button>
+</Link>
+
 
                 <button
   className="

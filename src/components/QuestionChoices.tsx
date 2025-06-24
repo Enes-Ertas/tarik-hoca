@@ -7,8 +7,8 @@ type QuestionChoicesProps = {
   onCloseModal: () => void;
   selectedOption: string | null;
   setSelectedOption: React.Dispatch<React.SetStateAction<string | null>>;
-  isTrue: boolean | null;
-  wrongOption: string | null;
+  isCorrectAnswerFound: boolean | null;
+  wrongOptions: string[];
 };
 
 export default function QuestionChoices({
@@ -18,8 +18,8 @@ export default function QuestionChoices({
   onCloseModal,
   selectedOption,
   setSelectedOption,
-  isTrue,
-  wrongOption,
+  isCorrectAnswerFound,
+  wrongOptions,
 }: QuestionChoicesProps) {
   const options = [
     { letter: "A", text: questions[currentIndex]?.option_a },
@@ -32,28 +32,24 @@ export default function QuestionChoices({
     <div className="space-y-2">
       {options.map((opt) => {
         const isSelected = opt.letter === selectedOption;
-        const isWrong = opt.letter === wrongOption;
+        const isWrong = wrongOptions.includes(opt.letter);
 
         return (
           <div
             key={opt.letter}
             className={`flex flex-row items-center p-3 rounded-xl border ${
               isSelected
-                ? isTrue === false
-                  ? "border-[#FF5861]" // Yanlış seçiliyse kırmızı
-                  : "border-[#4A00FF]" // Doğru ya da seçilmişse mavi
+                ? "border-[#4A00FF]" // Şu an seçilen
                 : isWrong
-                ? "border-[#FF5861]" // Yanlış seçenek seçildiğinde başka şık seçsen bile kırmızı
+                ? "border-[#FF5861]" // Daha önce yanlış seçilen
                 : "border-neutral"
             }`}
           >
             <div
               onClick={() => setSelectedOption(opt.letter)}
-              className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-auto ${
+              className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-pointer ${
                 isSelected
-                  ? isTrue === false
-                    ? "bg-[#FF5861] border-[#FF5861] text-white"
-                    : "bg-[#4A00FF] border-[#4A00FF] text-white"
+                  ? "bg-[#4A00FF] border-[#4A00FF] text-white"
                   : isWrong
                   ? "bg-[#FF5861] border-[#FF5861] text-white"
                   : "border-neutral text-primary"

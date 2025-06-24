@@ -11,7 +11,8 @@ const [currentIndex, setCurrentIndex] = useState(0);
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [selectedOption, setSelectedOption] = useState<string | null>(null);
 const [isTrue, setIsTrue] = useState<boolean | null>(null);
-const [wrongOption, setWrongOption] = useState<string | null>(null); 
+const [wrongOptions, setWrongOptions] = useState<string[]>([]);
+const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>(null);
 
 
 useEffect(() => {
@@ -32,29 +33,32 @@ const correctOption = questions[currentIndex]?.correct_option;
 let checkButtonBg = "bg-gray-500 border-gray-700 text-[#E5E5ED]";
 let checkButtonText = "Check";
 
-if (isTrue === true) {
+if (isCorrectAnswerFound === true) {
+  // Doğru cevap bulununca yeşil arkaplan
   checkButtonBg = "bg-[#00A96E] border-[#00A96E] text-white";
-  checkButtonText = "Correct"; // Doğru bilindiyse
-} else if (isTrue === false) {
+  checkButtonText = "Correct"; 
+} else if (isCorrectAnswerFound === false) {
+  // İlk yanlış cevap verildiyse kırmızı arkaplan
   checkButtonBg = "bg-[#FF5861] border-[#FF5861] text-white";
-  checkButtonText = "Check Again"; // Yanlış bilindiyse
+  checkButtonText = "Check Again";
 } else if (selectedOption) {
-  checkButtonBg = "bg-[#4A00FF] border-[#4A00FF] text-white"; // Şık seçildiyse
+  // Henüz ilk kontrol edilmediyse ama bir şık seçildiyse mavi arkaplan
+  checkButtonBg = "bg-[#4A00FF] border-[#4A00FF] text-white";
 }
 
 
-
-
 const handleCheckClick = () => {
-  if (!selectedOption) return;
-   if (selectedOption === correctOption) {
-     setIsTrue(true);
-    setWrongOption(null); // doğruysa yanlış sıfırlansın
-   } else {
-     setIsTrue(false);
-    setWrongOption(selectedOption); // yanlış seçilen option
+  if (!selectedOption || isCorrectAnswerFound === true) return;
+
+  if (selectedOption === correctOption) {
+    setIsCorrectAnswerFound(true);  // doğru
+  } else {
+    setIsCorrectAnswerFound((prev) => (prev === null ? false : prev)); // ilk yanlışta false yap
+    setWrongOptions((prev) => [...prev, selectedOption]);
+    setSelectedOption(null); 
   }
 };
+
 
   return (
     <main className="min-h-screen flex flex-col md:flex-row p-6 gap-6 text-[#1F2955] bg-white">
@@ -88,8 +92,8 @@ const handleCheckClick = () => {
 
           {questions.length > 0 && (
         <QuestionChoices
-        wrongOption={wrongOption}
-        isTrue={isTrue}
+ wrongOptions={wrongOptions}
+  isCorrectAnswerFound={isCorrectAnswerFound}
   questions={questions}
   currentIndex={currentIndex}
   isModalOpen={isModalOpen}
@@ -171,11 +175,19 @@ const handleCheckClick = () => {
   onClick={handleCheckClick}
   disabled={!selectedOption}
   className={`
-    inline-flex items-center px-4 py-2 font-semibold text-sm gap-x-1
-    border rounded-lg cursor-pointer
-    ${selectedOption ? checkButtonBg : 'bg-gray-500 border-gray-700 text-[#E5E5ED]'}
-    ${!selectedOption ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'}
-  `}
+  inline-flex items-center px-4 py-2 font-semibold text-sm gap-x-1 border rounded-lg cursor-pointer
+  ${
+    isCorrectAnswerFound === true
+      ? 'bg-[#00A96E] border-[#00A96E] text-white'      // Doğru
+      : isCorrectAnswerFound === false
+      ? 'bg-[#FF5861] border-[#FF5861] text-white'      // İlk yanlış ve devamı
+      : selectedOption
+      ? 'bg-[#4A00FF] border-[#4A00FF] text-white'      // Henüz kontrol edilmemiş seçim
+      : 'bg-gray-500 border-gray-700 text-[#E5E5ED]'    // Hiçbir şey seçilmemiş
+  }
+  ${!selectedOption && isCorrectAnswerFound === null ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-80'}
+`}
+
 >
   {checkButtonText}
 </button>

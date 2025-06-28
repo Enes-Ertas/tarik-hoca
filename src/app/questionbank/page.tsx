@@ -77,6 +77,18 @@ const handleCheckClick = () => {
 
   <p className="text-center text-sm text-gray-500">Question {currentIndex + 1} of {questions.length}</p>
     
+    +  {/* Question ID Box for mobile view */}
+  <div className="md:hidden bg-white p-4 rounded shadow text-sm">
+    <div className="font-bold mb-2">
+      Question ID: <span className="text-gray-600">#01081</span>
+    </div>
+    <div>Section: English</div>
+    <div>Score Band: N/A</div>
+    <div>Domain: N/A</div>
+    <div>Skill: N/A</div>
+  </div>
+
+
   <div className="bg-white border border-gray-200 text-[#1F2955] p-6 rounded-xl shadow-sm leading-relaxed text-lg mt-6">
    <p>{questions[currentIndex]?.question_text}</p>
   </div>
@@ -87,7 +99,7 @@ const handleCheckClick = () => {
 
       {/* Sağ Panel */}
       <section className="md:w-1/3 space-y-4">
-        <div className="bg-white p-4 rounded shadow text-sm">
+        <div className="hidden md:block bg-white p-4 rounded shadow text-sm">
           <div className="font-bold mb-2">Question ID: <span className="text-gray-600">#01081</span></div>
           <div>Section: English</div>
           <div>Score Band: N/A</div>

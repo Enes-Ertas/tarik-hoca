@@ -9,6 +9,7 @@ type QuestionChoicesProps = {
   setSelectedOption: React.Dispatch<React.SetStateAction<string | null>>;
   isCorrectAnswerFound: boolean | null;
   wrongOptions: string[];
+  showChoiceIcons: boolean;
 };
 
 export default function QuestionChoices({
@@ -20,6 +21,7 @@ export default function QuestionChoices({
   setSelectedOption,
   isCorrectAnswerFound,
   wrongOptions,
+  showChoiceIcons
 }: QuestionChoicesProps) {
   const options = [
     { letter: "A", text: questions[currentIndex]?.option_a },
@@ -28,8 +30,9 @@ export default function QuestionChoices({
     { letter: "D", text: questions[currentIndex]?.option_d },
   ];
 
+
   return (
-    <div className="space-y-2">
+    <div className="space-y-3 bg-white p-4 rounded shadow text-base">
       {options.map((opt) => {
         const isSelected = opt.letter === selectedOption;
         const isWrong = wrongOptions.includes(opt.letter);
@@ -38,31 +41,42 @@ export default function QuestionChoices({
         return (
           <div
             key={opt.letter}
-            className={`flex flex-row items-center p-3 rounded-xl border ${
+            className={`flex items-center justify-between p-3 rounded-xl border ${
               isCorrectAnswerFound === true && isCorrectOption
-                ? "border-[#00A96E]" // Doğru cevap yeşil
+                ? "border-[#00A96E]"
                 : isSelected
-                ? "border-[#4A00FF]" // Seçilen
+                ? "border-[#4A00FF]"
                 : isWrong
-                ? "border-[#FF5861]" // Yanlış seçilen
+                ? "border-[#FF5861]"
                 : "border-neutral"
             }`}
           >
-            <div
-              onClick={() => setSelectedOption(opt.letter)}
-              className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-auto ${
-                isCorrectAnswerFound === true && isCorrectOption
-                  ? "bg-[#00A96E] border-[#00A96E] text-white"
-                  : isSelected
-                  ? "bg-[#4A00FF] border-[#4A00FF] text-white"
-                  : isWrong
-                  ? "bg-[#FF5861] border-[#FF5861] text-white"
-                  : "border-neutral text-primary"
-              }`}
-            >
-              <span className="pointer-events-none select-none">{opt.letter}</span>
+            <div className="flex items-center w-full max-w-[90%]">
+              <div
+                onClick={() => setSelectedOption(opt.letter)}
+                className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-pointer ${
+                  isCorrectAnswerFound === true && isCorrectOption
+                    ? "bg-[#00A96E] border-[#00A96E] text-white"
+                    : isSelected
+                    ? "bg-[#4A00FF] border-[#4A00FF] text-white"
+                    : isWrong
+                    ? "bg-[#FF5861] border-[#FF5861] text-white"
+                    : "border-neutral text-primary"
+                }`}
+              >
+                <span className="pointer-events-none select-none">{opt.letter}</span>
+              </div>
+              <p className="ml-3 cursor-text select-none">{opt.text}</p>
             </div>
-            <p className="ml-3 flex-1 cursor-text select-none">{opt.text}</p>
+
+            {showChoiceIcons && (
+              <button
+                onClick={() => alert(`Marked ${opt.letter}`)}
+                className="ml-4 w-6 h-6 flex items-center justify-center border border-gray-500 rounded-full bg-white shadow-sm shrink-0"
+              >
+                <span className="line-through">{opt.letter}</span>
+              </button>
+            )}
           </div>
         );
       })}

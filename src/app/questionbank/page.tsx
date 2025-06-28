@@ -13,6 +13,7 @@ const [selectedOption, setSelectedOption] = useState<string | null>(null);
 const [isTrue, setIsTrue] = useState<boolean | null>(null);
 const [wrongOptions, setWrongOptions] = useState<string[]>([]);
 const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>(null);
+const [showChoiceIcons, setShowChoiceIcons] = useState(false);
 
 
 useEffect(() => {
@@ -106,7 +107,23 @@ const handleCheckClick = () => {
           <div>Domain: N/A</div>
           <div>Skill:N/A</div>
         </div>
+           {/* Gri ayrım kutusu + içerik */}
+        <div className="hidden md:flex items-center justify-between bg-gray-100 rounded px-4 py-2">
+          <div className="flex items-center gap-2 text-sm text-gray-700">
+            {/* Icon placeholder (örneğin 📌 yerine svg konabilir) */}
+            <span>📌</span>
+            <span className="font-medium">Mark for Review</span>
+          </div>
+  <button
+  onClick={() => setShowChoiceIcons((prev) => !prev)}
+  className="bg-gray-100 border border-gray-300 rounded-xl px-3 py-1.5 text-sm hover:bg-gray-200 transition hover:cursor-pointer active:scale-95 transition-transform"
+>
+  <span className="line-through">ABC</span>
+</button>
 
+
+
+        </div>
         <div className="bg-white p-4 rounded shadow text-base space-y-3">
 
           {questions.length > 0 && (
@@ -119,6 +136,7 @@ const handleCheckClick = () => {
   onCloseModal={() => setIsModalOpen(false)}
   selectedOption={selectedOption}
   setSelectedOption={setSelectedOption}
+    showChoiceIcons={showChoiceIcons}
 />
           )}
         </div>

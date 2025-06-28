@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { QuestionType } from "@/app/types/types";
 
 type QuestionChoicesProps = {
@@ -21,7 +22,7 @@ export default function QuestionChoices({
   setSelectedOption,
   isCorrectAnswerFound,
   wrongOptions,
-  showChoiceIcons
+  showChoiceIcons,
 }: QuestionChoicesProps) {
   const options = [
     { letter: "A", text: questions[currentIndex]?.option_a },
@@ -30,13 +31,24 @@ export default function QuestionChoices({
     { letter: "D", text: questions[currentIndex]?.option_d },
   ];
 
+  const [disabledOptions, setDisabledOptions] = useState<string[]>([]);
+
+  const toggleDisabled = (letter: string) => {
+    setDisabledOptions((prev) =>
+      prev.includes(letter)
+        ? prev.filter((l) => l !== letter)
+        : [...prev, letter]
+    );
+  };
 
   return (
     <div className="space-y-3 bg-white p-4 rounded shadow text-base">
       {options.map((opt) => {
         const isSelected = opt.letter === selectedOption;
         const isWrong = wrongOptions.includes(opt.letter);
-        const isCorrectOption = opt.letter === questions[currentIndex]?.correct_option;
+        const isCorrectOption =
+          opt.letter === questions[currentIndex]?.correct_option;
+        const isDisabled = disabledOptions.includes(opt.letter);
 
         return (
           <div
@@ -53,8 +65,16 @@ export default function QuestionChoices({
           >
             <div className="flex items-center w-full max-w-[90%]">
               <div
-                onClick={() => setSelectedOption(opt.letter)}
-                className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold cursor-pointer ${
+                onClick={() => {
+                  if (!isDisabled) {
+                    setSelectedOption(opt.letter);
+                  }
+                }}
+                className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold ${
+                  isDisabled
+                    ? "cursor-not-allowed opacity-50"
+                    : "cursor-pointer"
+                } ${
                   isCorrectAnswerFound === true && isCorrectOption
                     ? "bg-[#00A96E] border-[#00A96E] text-white"
                     : isSelected
@@ -64,15 +84,23 @@ export default function QuestionChoices({
                     : "border-neutral text-primary"
                 }`}
               >
-                <span className="pointer-events-none select-none">{opt.letter}</span>
+                <span className={`pointer-events-none select-none ${isDisabled ? "line-through" : ""}`}>
+                  {opt.letter}
+                </span>
               </div>
-              <p className="ml-3 cursor-text select-none">{opt.text}</p>
+              <p
+                className={`ml-3 select-none ${
+                  isDisabled ? "line-through text-gray-400" : ""
+                }`}
+              >
+                {opt.text}
+              </p>
             </div>
 
             {showChoiceIcons && (
               <button
-                onClick={() => alert(`Marked ${opt.letter}`)}
-                className="ml-4 w-6 h-6 flex items-center justify-center border border-gray-500 rounded-full bg-white shadow-sm shrink-0"
+                onClick={() => toggleDisabled(opt.letter)}
+                className="ml-4 w-6 h-6 flex items-center justify-center border border-gray-500 rounded-full bg-white shadow-sm shrink-0 hover:cursor-pointer"
               >
                 <span className="line-through">{opt.letter}</span>
               </button>

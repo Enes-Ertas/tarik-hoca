@@ -14,6 +14,8 @@ const [isTrue, setIsTrue] = useState<boolean | null>(null);
 const [wrongOptions, setWrongOptions] = useState<string[]>([]);
 const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>(null);
 const [showChoiceIcons, setShowChoiceIcons] = useState(false);
+const [isBookmarked, setIsBookmarked] = useState(false);
+
 
 
 useEffect(() => {
@@ -108,22 +110,47 @@ const handleCheckClick = () => {
           <div>Skill:N/A</div>
         </div>
            {/* Gri ayrım kutusu + içerik */}
-        <div className="hidden md:flex items-center justify-between bg-gray-100 rounded px-4 py-2">
-          <div className="flex items-center gap-2 text-sm text-gray-700">
-            {/* Icon placeholder (örneğin 📌 yerine svg konabilir) */}
-            <span>📌</span>
-            <span className="font-medium">Mark for Review</span>
-          </div>
-  <button
-  onClick={() => setShowChoiceIcons((prev) => !prev)}
-  className="bg-gray-100 border border-gray-300 rounded-xl px-3 py-1.5 text-sm hover:bg-gray-200 transition hover:cursor-pointer active:scale-95 transition-transform"
->
-  <span className="line-through">ABC</span>
+   <div className="hidden md:flex items-center justify-between bg-gray-100 rounded px-4 py-2">
+  <div className="flex items-center gap-2 text-sm text-gray-700">
+<button onClick={() => setIsBookmarked((prev) => !prev)} className="hover:opacity-70 transition cursor-pointer">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill={isBookmarked ? "#FFBE00" : "none"}
+    viewBox="0 0 24 24"
+    strokeWidth="1.5"
+    stroke="currentColor"
+    className="md:size-7 size-6 text-gray-700"
+  >
+    {isBookmarked ? (
+      <path
+        fillRule="evenodd"
+        d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z"
+        clipRule="evenodd"
+      />
+    ) : (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+      />
+    )}
+  </svg>
 </button>
 
 
+   <span className="font-medium">
+    {isBookmarked ? "Marked for Review" : "Mark for Review"}
+  </span>
+  </div>
 
-        </div>
+  <button
+    onClick={() => setShowChoiceIcons((prev) => !prev)}
+    className="bg-gray-100 border border-gray-300 rounded-xl px-3 py-1.5 text-sm hover:bg-gray-200 transition hover:cursor-pointer active:scale-95 transition-transform"
+  >
+    <span className="line-through">ABC</span>
+  </button>
+</div>
+
         <div className="bg-white p-4 rounded shadow text-base space-y-3">
 
           {questions.length > 0 && (

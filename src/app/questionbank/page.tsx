@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import {QuestionType} from "@/app/types/types"
 import QuestionChoices from "@/components/QuestionChoices";
+import { useUser } from "@supabase/auth-helpers-react";
 
 
 export default function QuestionBankPage() {
@@ -15,6 +16,7 @@ const [wrongOptions, setWrongOptions] = useState<string[]>([]);
 const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>(null);
 const [showChoiceIcons, setShowChoiceIcons] = useState(false);
 const [isBookmarked, setIsBookmarked] = useState(false);
+const user = useUser();
 
 
 
@@ -57,15 +59,45 @@ if (isCorrectAnswerFound === true) {
 }
 
 
-const handleCheckClick = () => {
+const handleCheckClick = async () => {
   if (!selectedOption || isCorrectAnswerFound === true) return;
 
-  if (selectedOption === correctOption) {
-    setIsCorrectAnswerFound(true);  // doğru
+  const currentQuestion = questions[currentIndex];
+  const isCorrect = selectedOption === currentQuestion.correct_option;
+  
+  // Geçmiş cevaplara bak
+  const { data: previousAnswers } = await supabase
+    .from("user_answers")
+    .select("is_correct")
+    .eq("user_id", user?.id)  // Auth sistemin varsa
+    .eq("question_id", currentQuestion.id);
+
+  let answerType = "incorrect";
+  if (isBookmarked) {
+    answerType = "marked_for_review";
+  } else if (isCorrect) {
+    const hadWrongBefore = previousAnswers?.some((ans) => ans.is_correct === false);
+    answerType = hadWrongBefore ? "correct_with_prior_incorrect" : "correct";
+  }
+
+  const { error } = await supabase.from("user_answers").insert({
+    user_id: user?.id,
+    question_id: currentQuestion.id,
+    selected_option: selectedOption,
+    is_correct: isCorrect,
+    answer_type: answerType,
+  });
+  
+  if (error) {
+    console.error("Answer insert failed:", error);
+  }
+
+  if (isCorrect) {
+    setIsCorrectAnswerFound(true);
   } else {
-    setIsCorrectAnswerFound((prev) => (prev === null ? false : prev)); // ilk yanlışta false yap
+    setIsCorrectAnswerFound((prev) => (prev === null ? false : prev));
     setWrongOptions((prev) => [...prev, selectedOption]);
-    setSelectedOption(null); 
+    setSelectedOption(null);
   }
 };
 

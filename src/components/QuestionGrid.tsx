@@ -12,53 +12,55 @@ interface QuestionGridProps {
 }
 
 export default function QuestionGrid({ currentIndex, onSelect, userId }: QuestionGridProps) {
-  const [difficulties, setDifficulties] = useState<{ id: number; difficulty: Difficulty }[]>([])
-   const [answerMap, setAnswerMap] = useState<Record<number, string>>({})
+const [difficulties, setDifficulties] = useState<{ id: string; difficulty: Difficulty }[]>([])
+  const [answerMap, setAnswerMap] = useState<Record<string, string>>({})
   console.log("QuestionGrid props:", { currentIndex, onSelect })
 
 
-  useEffect(() => {
-    console.log("userID", userId)
-    if (!userId) return
-    const fetchAnswers = async () => {
-      const { data, error } = await supabase
-        .from("user_answers")
-        .select("question_id,answer_type")
-       .eq("user_id", userId)
-      if (!error && data) {
-        const map: Record<number, string> = {}
-        data.forEach(a => {
-          map[a.question_id] = a.answer_type
-        })
-        setAnswerMap(map)
-      }
+useEffect(() => {
+  if (!userId) return
+  const fetchAnswers = async () => {
+    const { data, error } = await supabase
+      .from("user_answers")
+      .select("question_id, answer_type")
+      .eq("user_id", userId)
+    if (!error && data) {
+      const map: Record<string,string> = {}
+      data.forEach(a => map[a.question_id.toString()] = a.answer_type)
+      console.log("▶ fetched answerMap:", map)
+      setAnswerMap(map)
     }
-    fetchAnswers()
-  }, [userId])
+  }
+  fetchAnswers()
+}, [userId])
 
-  useEffect(() => {
-    const fetchDifficulties = async () => {
-      const { data, error } = await supabase
-        .from("questions")
-        .select("id, difficulty")
-        .order("id", { ascending: true })
 
-      if (error) {
-        console.error("Supabase error:", error)
-        return
-      }
+useEffect(() => {
+  const fetchDifficulties = async () => {
+    const { data, error } = await supabase
+      .from("questions")
+      .select("id, difficulty")
+      .order("created_at", { ascending: true })  // ← burayı değiştiriyoruz
 
-      const cleaned = data
-        .filter((q): q is { id: number; difficulty: Difficulty } =>
-          [1, 2, 3, 4, 5, 6, 7].includes(q.difficulty)
-        )
-        .map((q) => ({ id: q.id, difficulty: q.difficulty }))
-
-      setDifficulties(cleaned)
+    if (error) {
+      console.error("Supabase error:", error)
+      return
     }
 
-    fetchDifficulties()
-  }, [])
+    // tip güvenliği için yine temizleyip state'e at
+    const cleaned = (data ?? [])
+      .filter((q): q is { id: string; difficulty: Difficulty } =>
+        [1,2,3,4,5,6,7].includes(q.difficulty as any)
+      )
+      .map(q => ({ id: q.id, difficulty: q.difficulty as Difficulty }))
+
+    console.log("▶ sorted difficulties:", cleaned.map(c => c.id))
+    setDifficulties(cleaned)
+  }
+
+  fetchDifficulties()
+}, [])
+
 
   const getBorderColor = (d: Difficulty) => {
     if (d <= 3) return "border-green-500"
@@ -93,46 +95,49 @@ export default function QuestionGrid({ currentIndex, onSelect, userId }: Questio
 
 <div className="flex flex-wrap gap-2 w-full p-6">
   {difficulties.map(({ id, difficulty }, i) => {
-    const status = answerMap[id];
-    console.log(`QuestionGrid ▶ id=${id} status=`, status)
-    return (
-      <div
-        key={id}
-        onClick={() => onSelect(i)}
+  // status artık doğrudan question_id === id ile eşleşiyor
+  const status = answerMap[id]
+  console.log(`▶ box index=${i+1}, id=${id}, status=${status}`)
+
+  return (
+    <div
+      key={id}
+      onClick={() => onSelect(i)}
+      className={`
+        relative inline-flex items-end justify-center leading-none text-sm font-medium
+        w-10 h-10
+        pt-0 pb-1 px-3
+        my-1 mx-0.5
+        rounded-lg
+        transition duration-200 ease-out
+        ${
+          i === currentIndex
+            ? "bg-[#1F2937] text-white cursor-pointer"
+            : `bg-white hover:bg-gray-100 cursor-pointer border border-solid ${getBorderColor(difficulty)} border-b-4`
+        }
+      `}
+    >
+      {i + 1}
+      <span
         className={`
-          relative inline-flex items-end justify-center leading-none text-sm font-medium
-          w-10 h-10
-          pt-0 pb-1 px-3
-          my-1 mx-0.5
-          rounded-lg
-          transition duration-200 ease-out
+          absolute w-3 h-3 rounded-full top-0.5 right-0.5
           ${
-            i === currentIndex
-              ? "bg-[#1F2937] text-white cursor-pointer"
-              : `bg-white hover:bg-gray-100 cursor-pointer border border-solid ${getBorderColor(difficulty)} border-b-4`
+            status === "correct"
+              ? "bg-green-500"
+              : status === "incorrect"
+              ? "bg-red-500"
+              : status === "correct_with_prior_incorrect"
+              ? "bg-gradient-to-br from-green-500 to-red-500"
+              : status === "marked_for_review"
+              ? "bg-yellow-400"
+              : "hidden"
           }
         `}
-      >
-        {i + 1}
-        <span
-          className={`
-            absolute w-3 h-3 rounded-full top-0.5 right-0.5
-            ${
-              status === "correct"
-                ? "bg-green-500"
-                : status === "incorrect"
-                ? "bg-red-500"
-                : status === "correct_with_prior_incorrect"
-                ? "bg-gradient-to-br from-green-500 to-red-500"
-                : status === "marked_for_review"
-                ? "bg-yellow-400"
-                : "hidden"
-            }
-          `}
-        ></span>
-      </div>
-    );
-  })}
+      ></span>
+    </div>
+  )
+})}
+
 </div>
 
     </>

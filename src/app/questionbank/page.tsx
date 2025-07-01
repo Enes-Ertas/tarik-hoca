@@ -4,6 +4,8 @@ import { supabase } from "@/lib/supabaseClient";
 import {QuestionType} from "@/app/types/types"
 import QuestionChoices from "@/components/QuestionChoices";
 import { useUser } from "@supabase/auth-helpers-react";
+import QuestionGrid from "@/components/QuestionGrid"
+
 
 
 export default function QuestionBankPage() {
@@ -17,6 +19,7 @@ const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>
 const [showChoiceIcons, setShowChoiceIcons] = useState(false);
 const [isBookmarked, setIsBookmarked] = useState(false);
 const [userId, setUserId] = useState<string | null>(null);
+
 
 
 
@@ -118,7 +121,8 @@ const handleCheckClick = async () => {
 
 
   return (
-    <main className="min-h-screen flex flex-col md:flex-row p-6 gap-6 text-[#1F2955] bg-white">
+    <main className="min-h-screen text-[#1F2955] bg-white">
+       <div className="flex flex-col md:flex-row p-6 gap-6">
       {/* Sol Panel */}
 <section className="md:w-2/3 space-y-6 py-12">
   <h1 className="text-3xl font-bold text-center text-[#1F2955]">
@@ -306,6 +310,12 @@ const handleCheckClick = async () => {
 </div>
 
         </div>
+      </section>
+            </div>
+
+      {/* Zorluk düzeyi ızgarası */}
+      <section className="w-full py-6">
+        <QuestionGrid currentIndex={currentIndex} onSelect={setCurrentIndex} />
       </section>
       {isModalOpen && (
   <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

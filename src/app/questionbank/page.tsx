@@ -22,31 +22,58 @@ const [userId, setUserId] = useState<string | null>(null);
 
 
 
-
 useEffect(() => {
-
+  // Kullanıcıyı ilk yüklemede çek
   const fetchUser = async () => {
-    // getSession() ile önceki getUser() yerine tüm session'ı alıyoruz
     const { data: { session }, error } = await supabase.auth.getSession();
-    if (error) {
-      console.error("Could not get session:", error);
-      setUserId(null);
-    } else {
-      // session var ise içinden user.id geliyor
-      setUserId(session?.user.id ?? null);
+    console.log("getSession → session:", session, " error:", error);
+
+    // localStorage’da gerçekten bir token var mı?
+    console.log(
+      "localStorage['supabase.auth.token'] →",
+      localStorage.getItem("supabase.auth.token")
+    );
+    // document.cookie’ü de kontrol et
+    console.log("document.cookie →", document.cookie);
+
+    setUserId(session?.user.id ?? null);
+  }
+  fetchUser()
+
+  // Auth state değişikliklerini de dinle (ör. login/out)
+  const { data: listener } = supabase.auth.onAuthStateChange(
+    (_event, session) => {
+      console.log("Auth state changed:", session)
+      setUserId(session?.user.id ?? null)
     }
-  };
-  fetchUser();
+  )
+
+  // Soruları çek
   const fetchQuestions = async () => {
-    const { data, error } = await supabase.from("questions").select("*").order("created_at", { ascending: true });
+    const { data, error } = await supabase
+      .from("questions")
+      .select("*")
+      .order("created_at", { ascending: true })
+
     if (error) {
-      console.error("Error fetching questions:", error);
+      console.error("Error fetching questions:", error)
     } else {
-      setQuestions(data);
+      setQuestions(data)
     }
-  };
-  fetchQuestions();
-}, []);
+  }
+  fetchQuestions()
+
+  // Temizlik: listener aboneliğini iptal et
+  return () => {
+    listener.subscription.unsubscribe()
+  }
+}, [])
+
+
+  // Log to verify when userId actually changes
+  useEffect(() => {
+    console.log("QuestionBankPage ▶ userId =", userId);
+  }, [userId]);
 
 useEffect(() => {
   // Yeni soruya geçildiğinde durumları sıfırla
@@ -315,7 +342,7 @@ const handleCheckClick = async () => {
 
       {/* Zorluk düzeyi ızgarası */}
       <section className="w-full py-6">
-        <QuestionGrid currentIndex={currentIndex} onSelect={setCurrentIndex} />
+         <QuestionGrid currentIndex={currentIndex} onSelect={setCurrentIndex} userId={userId} />
       </section>
       {isModalOpen && (
   <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

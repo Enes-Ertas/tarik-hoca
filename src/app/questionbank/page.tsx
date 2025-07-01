@@ -16,11 +16,18 @@ const [wrongOptions, setWrongOptions] = useState<string[]>([]);
 const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>(null);
 const [showChoiceIcons, setShowChoiceIcons] = useState(false);
 const [isBookmarked, setIsBookmarked] = useState(false);
-const user = useUser();
+const [userId, setUserId] = useState<string | null>(null);
 
 
 
 useEffect(() => {
+
+    const fetchUser = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error) console.error("Could not get user:", error);
+    else setUserId(user?.id ?? null);
+  };
+  fetchUser();
   const fetchQuestions = async () => {
     const { data, error } = await supabase.from("questions").select("*").order("created_at", { ascending: true });
     if (error) {
@@ -60,17 +67,17 @@ if (isCorrectAnswerFound === true) {
 
 
 const handleCheckClick = async () => {
-  if (!selectedOption || isCorrectAnswerFound === true) return;
+  if (!selectedOption || isCorrectAnswerFound === true || !userId) return;
 
   const currentQuestion = questions[currentIndex];
   const isCorrect = selectedOption === currentQuestion.correct_option;
   
   // Geçmiş cevaplara bak
-  const { data: previousAnswers } = await supabase
-    .from("user_answers")
-    .select("is_correct")
-    .eq("user_id", user?.id)  // Auth sistemin varsa
-    .eq("question_id", currentQuestion.id);
+    const { data: previousAnswers } = await supabase
+      .from("user_answers")
+      .select("is_correct")
+      .eq("user_id", userId)
+      .eq("question_id", currentQuestion.id);
 
   let answerType = "incorrect";
   if (isBookmarked) {
@@ -80,13 +87,15 @@ const handleCheckClick = async () => {
     answerType = hadWrongBefore ? "correct_with_prior_incorrect" : "correct";
   }
 
-  const { error } = await supabase.from("user_answers").insert({
-    user_id: user?.id,
+  const { error } = await supabase.from("user_answers").upsert({
+    user_id: userId,
     question_id: currentQuestion.id,
     selected_option: selectedOption,
     is_correct: isCorrect,
     answer_type: answerType,
-  });
+      },
+      { onConflict: "user_id,question_id" }
+    );
   
   if (error) {
     console.error("Answer insert failed:", error);

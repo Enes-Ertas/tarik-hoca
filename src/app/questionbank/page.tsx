@@ -22,10 +22,16 @@ const [userId, setUserId] = useState<string | null>(null);
 
 useEffect(() => {
 
-    const fetchUser = async () => {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error) console.error("Could not get user:", error);
-    else setUserId(user?.id ?? null);
+  const fetchUser = async () => {
+    // getSession() ile önceki getUser() yerine tüm session'ı alıyoruz
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error("Could not get session:", error);
+      setUserId(null);
+    } else {
+      // session var ise içinden user.id geliyor
+      setUserId(session?.user.id ?? null);
+    }
   };
   fetchUser();
   const fetchQuestions = async () => {

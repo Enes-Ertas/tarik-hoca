@@ -130,6 +130,31 @@ useEffect(() => {
   updateBookmark();
 }, [isBookmarked]);
 
+useEffect(() => {
+  if (!userId || questions.length === 0) return;
+
+  const currentQuestionId = questions[currentIndex]?.id;
+  if (!currentQuestionId) return;
+
+  const checkIfMarked = async () => {
+    const { data, error } = await supabase
+      .from("user_answers")
+      .select("answer_type")
+      .eq("user_id", userId)
+      .eq("question_id", currentQuestionId)
+      .single();
+
+    if (error) {
+      console.error("❌ Failed to fetch answer_type:", error.message || error);
+      return;
+    }
+
+    setIsBookmarked(data?.answer_type === "marked_for_review");
+    console.log("🔁 Bookmark state loaded:", data?.answer_type);
+  };
+
+  checkIfMarked();
+}, [currentIndex, userId, questions]);
 
 
 

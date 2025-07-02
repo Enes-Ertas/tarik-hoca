@@ -19,6 +19,7 @@ const [isCorrectAnswerFound, setIsCorrectAnswerFound] = useState<boolean | null>
 const [showChoiceIcons, setShowChoiceIcons] = useState(false);
 const [isBookmarked, setIsBookmarked] = useState(false);
 const [userId, setUserId] = useState<string | null>(null);
+const [refreshKey, setRefreshKey] = useState(0);
 
 
 
@@ -100,6 +101,36 @@ if (isCorrectAnswerFound === true) {
   // Henüz ilk kontrol edilmediyse ama bir şık seçildiyse mavi arkaplan
   checkButtonBg = "bg-[#4A00FF] border-[#4A00FF] text-white";
 }
+useEffect(() => {
+  const updateBookmark = async () => {
+    if (!userId || questions.length === 0) return;
+
+    const currentQuestion = questions[currentIndex];
+    if (!currentQuestion?.id) return;
+
+    const answer_type = isBookmarked ? "marked_for_review" : null;
+
+    const { error } = await supabase.from("user_answers").upsert(
+      {
+        user_id: userId,
+        question_id: currentQuestion.id,
+        answer_type,
+      },
+      { onConflict: "user_id,question_id" }
+    );
+
+    if (error) {
+      console.error("❌ Bookmark update failed:", error.message || error);
+    } else {
+      console.log("✅ answer_type updated to:", answer_type);
+      setRefreshKey((key) => key + 1);
+    }
+  };
+
+  updateBookmark();
+}, [isBookmarked]);
+
+
 
 
 const handleCheckClick = async () => {
@@ -144,6 +175,8 @@ const handleCheckClick = async () => {
     setWrongOptions((prev) => [...prev, selectedOption]);
     setSelectedOption(null);
   }
+
+  setRefreshKey((key) => key + 1);
 };
 
 
@@ -190,7 +223,13 @@ const handleCheckClick = async () => {
            {/* Gri ayrım kutusu + içerik */}
    <div className="hidden md:flex items-center justify-between bg-gray-100 rounded px-4 py-2">
   <div className="flex items-center gap-2 text-sm text-gray-700">
-<button onClick={() => setIsBookmarked((prev) => !prev)} className="hover:opacity-70 transition cursor-pointer">
+<button onClick={() => {
+  setIsBookmarked((prev) => {
+    const newState = !prev;
+    setRefreshKey((key) => key + 1); // force re-render
+    return newState;
+  });
+}} className="hover:opacity-70 transition cursor-pointer">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill={isBookmarked ? "#FFBE00" : "none"}
@@ -342,7 +381,11 @@ const handleCheckClick = async () => {
 
       {/* Zorluk düzeyi ızgarası */}
       <section className="w-full py-6">
-         <QuestionGrid currentIndex={currentIndex} onSelect={setCurrentIndex} userId={userId} />
+         <QuestionGrid currentIndex={currentIndex}   onSelect={(index) => {
+    setCurrentIndex(index);
+    setIsBookmarked(false);           // yeni soru seçildiğinde işaretleme sıfırlansın
+    setRefreshKey((key) => key + 1);  // refresh tetiklensin
+  }} userId={userId}  refreshKey={refreshKey} />
       </section>
       {isModalOpen && (
   <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">

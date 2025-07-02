@@ -9,9 +9,10 @@ interface QuestionGridProps {
   currentIndex: number
   onSelect: (index: number) => void
   userId: string | null
+   refreshKey: number;
 }
 
-export default function QuestionGrid({ currentIndex, onSelect, userId }: QuestionGridProps) {
+export default function QuestionGrid({ currentIndex, onSelect, userId, refreshKey }: QuestionGridProps) {
 const [difficulties, setDifficulties] = useState<{ id: string; difficulty: Difficulty }[]>([])
   const [answerMap, setAnswerMap] = useState<Record<string, string>>({})
   console.log("QuestionGrid props:", { currentIndex, onSelect })
@@ -32,7 +33,7 @@ useEffect(() => {
     }
   }
   fetchAnswers()
-}, [userId])
+}, [userId , refreshKey])
 
 
 useEffect(() => {
@@ -60,6 +61,10 @@ useEffect(() => {
 
   fetchDifficulties()
 }, [])
+
+useEffect(() => {
+  // refreshKey değişince veri güncellenebilir ya da yeniden çizilebilir
+}, [refreshKey]);
 
 
   const getBorderColor = (d: Difficulty) => {

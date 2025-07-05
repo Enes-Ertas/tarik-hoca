@@ -25,23 +25,37 @@ export default function RegisterPage() {
       return;
     }
     setError("");
-    const { error: signUpError } = await supabase.auth.signUp({
+    const {   data: { user },
+  error: signUpError, } = await supabase.auth.signUp({
       email,
       password: password1,
     });
 
-    if (signUpError) {
-      setError(signUpError.message);
-      alert("E-mail error");
-    } else {
-      setEmail("");
-      setPassword1("");
-      setPassword2("");
-      setName("");
-      setUsername("");
-      setReferralCode("");
-      setShowSuccessModal(true);
-    }
+     if (signUpError) {
+  setError(signUpError.message)
+  alert("E-mail error")
+} else if (user) {
+  const { error: profileError } = await supabase.from("profiles").insert({
+    id: user.id,
+    full_name: name,
+    username: username,
+    is_admin: false,
+  })
+
+  if (profileError) {
+    console.error("Profile insert error:", profileError.message)
+    alert("Kayıt tamamlandı ama profil eklenemedi.")
+  }
+
+  setEmail("")
+  setPassword1("")
+  setPassword2("")
+  setName("")
+  setUsername("")
+  setReferralCode("")
+  setShowSuccessModal(true)
+}
+
   };
 
   return (

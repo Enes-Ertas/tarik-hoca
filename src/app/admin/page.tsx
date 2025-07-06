@@ -21,6 +21,9 @@ const [currentPage, setCurrentPage] = useState(1)
  const [searchTerm, setSearchTerm] = useState('')
  const [editingQuestion, setEditingQuestion] = useState<any>(null)
 const [showModal, setShowModal] = useState(false)
+const [showNewModal, setShowNewModal] = useState(false);
+const [newQuestion, setNewQuestion] = useState<any>(null)
+
 
 
 const fetchQuestions = async (page: number, search: string = '') => {
@@ -179,7 +182,19 @@ onChange={(e) => {
     </button>
   </div>
     <button
-      onClick={() => console.log("Yeni soru ekleme formu aç")}
+      onClick={() => {
+    setNewQuestion({
+      question_text: '',
+      option_a: '',
+      option_b: '',
+      option_c: '',
+      option_d: '',
+      correct_option: '',
+      explanation: '',
+      difficulty: 1,
+    });
+    setShowNewModal(true);
+  }}
       className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
     >
       Yeni Soru Ekle
@@ -374,6 +389,94 @@ onChange={(e) => {
   </div>
 )}
 
+{showNewModal && newQuestion && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg overflow-y-auto max-h-[90vh]">
+      <h2 className="text-lg font-semibold mb-4 text-gray-800">Yeni Soru Ekle</h2>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-gray-700 mb-1">Soru</label>
+          <textarea
+            value={newQuestion.question_text}
+            onChange={(e) => setNewQuestion({ ...newQuestion, question_text: e.target.value })}
+            className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+            placeholder="Soru metni"
+            rows={4}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Zorluk</label>
+            <input
+              type="number"
+              value={newQuestion.difficulty}
+              onChange={(e) => setNewQuestion({ ...newQuestion, difficulty: parseInt(e.target.value) })}
+              className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+              placeholder="Zorluk (1-5)"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Doğru Seçenek</label>
+            <input
+              type="text"
+              value={newQuestion.correct_option}
+              onChange={(e) => setNewQuestion({ ...newQuestion, correct_option: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+              placeholder="A, B, C, D"
+            />
+          </div>
+        </div>
+
+        {['a', 'b', 'c', 'd'].map((key) => (
+          <div key={key}>
+            <label className="block text-gray-700 mb-1">Seçenek {key.toUpperCase()}</label>
+            <input
+              type="text"
+              value={newQuestion[`option_${key}`]}
+              onChange={(e) =>
+                setNewQuestion({ ...newQuestion, [`option_${key}`]: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+              placeholder={`Seçenek ${key.toUpperCase()}`}
+            />
+          </div>
+        ))}
+
+        <div>
+          <label className="block text-gray-700 mb-1">Açıklama</label>
+          <textarea
+            value={newQuestion.explanation}
+            onChange={(e) => setNewQuestion({ ...newQuestion, explanation: e.target.value })}
+            className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+            placeholder="Açıklama"
+            rows={4}
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-2 mt-6">
+        <button
+          onClick={() => setShowNewModal(false)}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+        >
+          Vazgeç
+        </button>
+        <button
+          onClick={async () => {
+            await supabase.from('questions').insert([newQuestion]);
+            setShowNewModal(false);
+            fetchQuestions(currentPage, searchTerm);
+          }}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          Kaydet
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
     
     </div>

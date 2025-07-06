@@ -23,6 +23,10 @@ const [currentPage, setCurrentPage] = useState(1)
 const [showModal, setShowModal] = useState(false)
 const [showNewModal, setShowNewModal] = useState(false);
 const [newQuestion, setNewQuestion] = useState<any>(null)
+const [showAddReferralModal, setShowAddReferralModal] = useState(false)
+const [referralEmail, setReferralEmail] = useState("")
+const [referralCode, setReferralCode] = useState("")
+
 
 
 
@@ -118,6 +122,16 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-white p-6">
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Admin Panel</h1>
+
+      <div className="flex justify-end mb-4">
+  <button
+    onClick={() => setShowAddReferralModal(true)}
+    className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-4 py-2 rounded"
+  >
+    Referans Kodu Ekle
+  </button>
+</div>
+
 
         <div className="overflow-x-auto shadow-md rounded-lg border border-gray-300">
         <table className="w-full text-left text-sm text-gray-700">
@@ -478,7 +492,71 @@ onChange={(e) => {
   </div>
 )}
 
-    
+    {showAddReferralModal && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
+      <h2 className="text-lg font-semibold mb-4 text-gray-800">Yeni Referans Kodu Ekle</h2>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-gray-700 mb-1">E-posta Adresi</label>
+          <input
+            type="email"
+            value={referralEmail}
+            onChange={(e) => setReferralEmail(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+            placeholder="example@email.com"
+          />
+        </div>
+
+        <div>
+          <label className="block text-gray-700 mb-1">Referans Kodu</label>
+          <input
+            type="text"
+            value={referralCode}
+            onChange={(e) => setReferralCode(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+            placeholder="Örn: TARIQ-2025"
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-2 mt-6">
+        <button
+          onClick={() => setShowAddReferralModal(false)}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+        >
+          Vazgeç
+        </button>
+        <button
+          onClick={async () => {
+            if (!referralEmail || !referralCode) {
+              alert("Tüm alanları doldurmalısınız.")
+              return
+            }
+            const { error } = await supabase.from('referral_codes').insert({
+              email: referralEmail,
+              code: referralCode,
+              used: false
+            })
+            if (error) {
+              alert("Bir hata oluştu: " + error.message)
+            } else {
+              alert("Başarıyla eklendi!")
+              setReferralEmail("")
+              setReferralCode("")
+              setShowAddReferralModal(false)
+            }
+          }}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          Ekle
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   )
 }

@@ -5,6 +5,7 @@ import {QuestionType} from "@/app/types/types"
 import QuestionChoices from "@/components/QuestionChoices";
 import { useUser } from "@supabase/auth-helpers-react";
 import QuestionGrid from "@/components/QuestionGrid"
+import { useRouter } from "next/navigation"
 
 
 
@@ -20,7 +21,30 @@ const [showChoiceIcons, setShowChoiceIcons] = useState(false);
 const [isBookmarked, setIsBookmarked] = useState(false);
 const [userId, setUserId] = useState<string | null>(null);
 const [refreshKey, setRefreshKey] = useState(0);
+  const router = useRouter()
 
+useEffect(() => {
+    const protectRoute = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return router.push("/accounts/login")
+
+      const { data: referral, error } = await supabase
+        .from("referral_codes")
+        .select("*")
+        .eq("email", user.email)
+        .eq("used", true)
+        .single()
+
+      if (!referral || error) {
+        console.warn("⛔ No valid referral found. Redirecting to /pricing")
+        return router.push("/pricing")
+      }
+
+      console.log("✅ Referral check passed")
+    }
+
+    protectRoute()
+  }, [])
 
 
 useEffect(() => {

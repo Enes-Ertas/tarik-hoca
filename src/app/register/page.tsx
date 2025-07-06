@@ -42,6 +42,22 @@ export default function RegisterPage() {
     is_admin: false,
   })
 
+    if (referralCode.trim() !== "") {
+    const { data: refData, error: refError } = await supabase
+      .from("referral_codes")
+      .select("*")
+      .eq("code", referralCode.trim())
+      .eq("email", email.trim())
+      .eq("used", false)
+      .maybeSingle();
+
+    if (refData) {
+      await supabase
+        .from("referral_codes")
+        .update({ used: true })
+        .eq("id", refData.id);
+    }
+  }
   if (profileError) {
     console.error("Profile insert error:", profileError.message)
     alert("Kayıt tamamlandı ama profil eklenemedi.")

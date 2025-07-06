@@ -102,7 +102,7 @@ useEffect(() => {
   {difficulties.map(({ id, difficulty }, i) => {
   // status artık doğrudan question_id === id ile eşleşiyor
   const status = answerMap[id]
-  console.log(`▶ box index=${i+1}, id=${id}, status=${status}`)
+
 
   return (
     <div

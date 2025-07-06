@@ -19,6 +19,8 @@ export default function AdminPage() {
 const [currentPage, setCurrentPage] = useState(1)
  const pageSize = 10
  const [searchTerm, setSearchTerm] = useState('')
+ const [editingQuestion, setEditingQuestion] = useState<any>(null)
+const [showModal, setShowModal] = useState(false)
 
 
 const fetchQuestions = async (page: number, search: string = '') => {
@@ -43,6 +45,11 @@ const fetchQuestions = async (page: number, search: string = '') => {
      setCurrentPage(page)
    }
  }
+useEffect(() => {
+  if (showModal && editingQuestion) {
+    console.log("DEBUG editingQuestion:", editingQuestion)
+  }
+}, [showModal, editingQuestion])
 
 
  useEffect(() => {
@@ -155,7 +162,10 @@ const fetchQuestions = async (page: number, search: string = '') => {
       type="text"
       placeholder="Soru içinde ara..."
       value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+onChange={(e) => {
+    setSearchTerm(e.target.value)
+    fetchQuestions(1, e.target.value) // canlı arama
+  }}
       className="px-4 py-2 border border-gray-300 rounded w-full max-w-md placeholder-gray-400 text-black"
     />
     <button
@@ -177,38 +187,72 @@ const fetchQuestions = async (page: number, search: string = '') => {
   </div>
 
   <div className="overflow-x-auto rounded-lg border border-gray-300 shadow-md">
-    <table className="w-full text-sm text-left text-gray-700">
+    <table className="w-full text-sm text-left text-gray-700 table-auto">
       <thead className="bg-gray-100 border-b border-gray-300">
-        <tr>
-          <th className="p-3 w-1/2 text-gray-800">Soru</th>
-          <th className="p-3 text-gray-800">Zorluk</th>
-          <th className="p-3 text-center text-gray-800">İşlemler</th>
-        </tr>
+  <tr>
+    <th className="p-3 text-gray-800">ID</th>
+    <th className="p-3 text-gray-800">Soru</th>
+    <th className="p-3 text-gray-800">Zorluk</th>
+    <th className="p-3 text-gray-800">A</th>
+    <th className="p-3 text-gray-800">B</th>
+    <th className="p-3 text-gray-800">C</th>
+    <th className="p-3 text-gray-800">D</th>
+    <th className="p-3 text-gray-800">Doğru Cevap</th>
+    <th className="p-3 text-gray-800">Açıklama</th>
+    <th className="p-3 text-gray-800">Oluşturma Tarihi</th>
+    <th className="p-3 text-center text-gray-800">İşlemler</th>
+  </tr>
       </thead>
       <tbody>
         {questions.map((q) => (
           <tr key={q.id} className="border-t border-gray-200 hover:bg-gray-50">
-            <td className="p-3 text-gray-700">{q.question_text.slice(0, 100)}...</td>
-            <td className="p-3">{q.difficulty}</td>
-            <td className="p-3 text-center space-x-2">
-              <button
-                onClick={() => console.log("Düzenle:", q.id)}
-                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm"
-              >
-                Düzenle
-              </button>
-              <button
-                onClick={async () => {
-                  const confirm = window.confirm("Bu soruyu silmek istediğinizden emin misiniz?")
-                  if (!confirm) return
-                  await supabase.from('questions').delete().eq('id', q.id)
-                  fetchQuestions(currentPage, searchTerm)
-                }}
-                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-sm"
-              >
-                Sil
-              </button>
-            </td>
+      <td className="p-3">{q.id}</td>
+      <td className="p-3 text-gray-700">{q.question_text.slice(0, 100)}...</td>
+      <td className="p-3">{q.difficulty}</td>
+      <td className="p-3">{q.option_a}</td>
+      <td className="p-3">{q.option_b}</td>
+      <td className="p-3">{q.option_c}</td>
+      <td className="p-3">{q.option_d}</td>
+      <td className="p-3">{q.correct_option}</td>
+      <td className="p-3 text-gray-700">{q.explanation?.slice(0, 100)}...</td>
+      <td className="p-3">{new Date(q.created_at).toLocaleDateString()}</td>
+<td className="p-3 text-center">
+  <div className="flex flex-col items-center space-y-2">
+    <button
+       onClick={() => {
+  setEditingQuestion({
+    id: q.id,
+    question_text: q.question_text,
+    option_a: q.option_a,
+    option_b: q.option_b,
+    option_c: q.option_c,
+    option_d: q.option_d,
+    correct_option: q.correct_option,
+    explanation: q.explanation,
+    difficulty: q.difficulty,
+  });
+  setShowModal(true);
+}}
+
+
+      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm"
+    >
+      Düzenle
+    </button>
+    <button
+      onClick={async () => {
+        const confirm = window.confirm("Bu soruyu silmek istediğinizden emin misiniz?")
+        if (!confirm) return
+        await supabase.from('questions').delete().eq('id', q.id)
+        fetchQuestions(currentPage, searchTerm)
+      }}
+      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 text-sm"
+    >
+      Sil
+    </button>
+  </div>
+</td>
+
           </tr>
         ))}
          {questions.length === 0 && (
@@ -239,6 +283,96 @@ const fetchQuestions = async (page: number, search: string = '') => {
     </button>
   </div>
 </div>
+
+{showModal && editingQuestion && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg overflow-y-auto max-h-[90vh]">
+      <h2 className="text-lg font-semibold mb-4 text-gray-800">Soruyu Düzenle</h2>
+
+      <div className="space-y-4">
+        <div>
+          <label className="block text-gray-700 mb-1">Soru</label>
+          <textarea
+            value={editingQuestion.question_text}
+            onChange={(e) => setEditingQuestion({ ...editingQuestion, question_text: e.target.value })}
+            className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+            placeholder="Soru metni"
+            rows={6}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-gray-700 mb-1">Zorluk</label>
+            <input
+              type="number"
+              value={editingQuestion.difficulty}
+              onChange={(e) => setEditingQuestion({ ...editingQuestion, difficulty: parseInt(e.target.value) })}
+              className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+              placeholder="Zorluk (1-5)"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-1">Doğru Seçenek</label>
+            <input
+              type="text"
+              value={editingQuestion.correct_option}
+              onChange={(e) => setEditingQuestion({ ...editingQuestion, correct_option: e.target.value })}
+              className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+              placeholder="A, B, C, D"
+            />
+          </div>
+        </div>
+
+        {['a', 'b', 'c', 'd'].map((key) => (
+          <div key={key}>
+            <label className="block text-gray-700 mb-1">Seçenek {key.toUpperCase()}</label>
+            <input
+              type="text"
+              value={editingQuestion[`option_${key}`]}
+              onChange={(e) =>
+                setEditingQuestion({ ...editingQuestion, [`option_${key}`]: e.target.value })
+              }
+              className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+              placeholder={`Seçenek ${key.toUpperCase()}`}
+            />
+          </div>
+        ))}
+
+        <div>
+          <label className="block text-gray-700 mb-1">Açıklama</label>
+          <textarea
+            value={editingQuestion.explanation}
+            onChange={(e) => setEditingQuestion({ ...editingQuestion, explanation: e.target.value })}
+            className="w-full p-2 border border-gray-300 rounded text-gray-900 placeholder-gray-500"
+            placeholder="Açıklama"
+            rows={6}
+          />
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-2 mt-6">
+        <button
+          onClick={() => setShowModal(false)}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400"
+        >
+          Vazgeç
+        </button>
+        <button
+          onClick={async () => {
+            const { id, ...updatedData } = editingQuestion
+            await supabase.from('questions').update(updatedData).eq('id', id)
+            setShowModal(false)
+            fetchQuestions(currentPage, searchTerm)
+          }}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          Kaydet
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
 
     

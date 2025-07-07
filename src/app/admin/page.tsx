@@ -59,49 +59,38 @@ useEffect(() => {
 }, [showModal, editingQuestion])
 
 
-//  useEffect(() => {
-//   const fetchData = async () => {
-//     const {
-//       data: { user },
-//       error: userError
-//     } = await supabase.auth.getUser()
+ useEffect(() => {
+  const fetchData = async () => {
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser()
 
-//     if (userError || !user) {
-//       router.push('/login')
-//       return
-//     }
+    if (userError || !user) {
+      router.push('/login')
+      return
+    }
 
-//     const { data: currentProfile, error: profileError } = await supabase
-//       .from('profiles')
-//       .select('is_admin')
-//       .eq('id', user.id)
-//       .single()
+    const { data: profileList, error: fetchError } = await supabase
+      .from('profiles')
+      .select('id, full_name, username, is_admin')
 
-//     if (profileError || !currentProfile?.is_admin) {
-//       alert("Erişim reddedildi: Admin değilsiniz.")
-//       router.push('/')
-//       return
-//     }
+    if (fetchError) {
+      console.error(fetchError)
+      return
+    }
 
-//     const { data: profileList, error: fetchError } = await supabase
-//       .from('profiles')
-//       .select('id, full_name, username, is_admin')
+    setProfiles(profileList)
+    setLoading(false)
 
-//     if (fetchError) {
-//       console.error(fetchError)
-//       return
-//     }
+    // ✅ Bu satır burada olacak
+    await fetchQuestions(1, '')
+  }
 
-//     setProfiles(profileList)
-//     setLoading(false)
+  // ✅ async fonksiyon burada çağrılacak
+  fetchData()
+}, [])
 
-//     // ✅ Bu satır burada olacak
-//     await fetchQuestions(1, '')
-//   }
-
-//   // ✅ async fonksiyon burada çağrılacak
-//   fetchData()
-// }, [])
 
 
   const toggleAdmin = async (id: string, makeAdmin: boolean) => {

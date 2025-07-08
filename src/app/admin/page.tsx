@@ -59,7 +59,7 @@ useEffect(() => {
 }, [showModal, editingQuestion])
 
 
- useEffect(() => {
+useEffect(() => {
   const fetchData = async () => {
     const {
       data: { user },
@@ -71,6 +71,20 @@ useEffect(() => {
       return
     }
 
+    // Admin kontrolü
+    const { data: currentProfile, error: profileError } = await supabase
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .single()
+
+    if (profileError || !currentProfile?.is_admin) {
+      console.warn("⛔ Admin değil, yönlendiriliyor.")
+      router.push('/')
+      return
+    }
+
+    // Adminse devam et
     const { data: profileList, error: fetchError } = await supabase
       .from('profiles')
       .select('id, full_name, username, is_admin')
@@ -83,13 +97,12 @@ useEffect(() => {
     setProfiles(profileList)
     setLoading(false)
 
-    // ✅ Bu satır burada olacak
     await fetchQuestions(1, '')
   }
 
-  // ✅ async fonksiyon burada çağrılacak
   fetchData()
 }, [])
+
 
 
 

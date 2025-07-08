@@ -24,27 +24,38 @@ const [refreshKey, setRefreshKey] = useState(0);
   const router = useRouter()
 
 useEffect(() => {
-    const protectRoute = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return router.push("/accounts/login")
+  const protectRoute = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return router.push("/accounts/login")
 
-      const { data: referral, error } = await supabase
-        .from("referral_codes")
-        .select("*")
-        .eq("email", user.email)
-        .eq("used", true)
-        .single()
+    // 1. Referral kontrolü
+    const { data: referral, error: referralError } = await supabase
+      .from("referral_codes")
+      .select("*")
+      .eq("email", user.email)
+      .eq("used", true)
+      .single()
 
-      if (!referral || error) {
-        console.warn("⛔ No valid referral found. Redirecting to /pricing")
-        return router.push("/pricing")
-      }
+    // 2. Admin kontrolü
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single()
 
-      console.log("✅ Referral check passed")
+    const isAdmin = profile?.is_admin === true
+
+    if (!referral && !isAdmin) {
+      console.warn("⛔ No valid referral or admin access. Redirecting to /pricing")
+      return router.push("/pricing")
     }
 
-    protectRoute()
-  }, [])
+    console.log("✅ Access granted (Referral or Admin)")
+  }
+
+  protectRoute()
+}, [])
+
 
 
 useEffect(() => {

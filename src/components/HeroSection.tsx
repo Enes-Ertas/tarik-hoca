@@ -2,6 +2,7 @@
  import { useRouter } from 'next/navigation';
  import { supabase } from '@/lib/supabaseClient';
     import React from 'react';
+    import Link from 'next/link'
 
 
  const HeroSection: React.FC = () => {
@@ -32,26 +33,28 @@
 </button>
 
 
-           <button
+<Link
+  href="/who-is-tarik-hoca"
   className="
-    inline-flex h-12 min-h-12  cursor-pointer 
+    inline-flex h-12 min-h-12 cursor-pointer 
     items-center justify-center rounded-lg px-4
-    text-sm  gap-2 font-semibold
-     shadow-sm
-    text-[#1F2955] bg-[#F2F2F2] button-pop
-  "
->Practice Tests</button>
-           <button
-  className="
-    inline-flex h-12 min-h-12 shrink-0 cursor-pointer select-none
-    flex-wrap items-center justify-center rounded-lg px-4
-    text-sm leading-none gap-2 font-semibold
-    transition-colors duration-200 ease-out shadow-sm
+    text-sm gap-2 font-semibold shadow-sm
     text-[#1F2955] bg-[#F2F2F2] button-pop
   "
 >
-  The Princeton Review Practice Tests <br /> Question Bank
-</button>
+  Who is Tarık Hoca
+</Link>
+<Link
+  href="/pricing"
+  className="
+    inline-flex h-12 min-h-12 cursor-pointer 
+    items-center justify-center rounded-lg px-4
+    text-sm gap-2 font-semibold shadow-sm
+    text-[#1F2955] bg-[#F2F2F2] button-pop
+  "
+>
+  Pricing
+</Link>
 
       </div>
     </div>

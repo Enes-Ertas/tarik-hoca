@@ -81,7 +81,7 @@ href="/"
 </Link>
 
 <Link
-  href="/donate"
+  href="/who-is-tarik-hoca"
   className="
     text-[#394E6A]
     border border-transparent
@@ -96,25 +96,12 @@ href="/"
     flex items-center gap-x-2
   "
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth="1.5"
-    stroke="currentColor"
-    className="w-5 h-5 text-[#0069FF]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-    />
-  </svg>
-  <span>Practice Tests</span>
+  <span>Who is Tarık Hoca</span>
 </Link>
+
 
         <Link
-  href="#"
+  href="/questionbank"
   className="
     text-[#394E6A]
     border border-transparent
@@ -128,46 +115,11 @@ href="/"
     button-pop
   "
 >
-  Question Banks
+  Question Bank
 </Link>
 
-      <Link
-  href="#"
-  className="
-    text-[#394E6A]
-    border border-transparent
-    bg-transparent
-    shadow-none outline-current
-    rounded-lg
-    transition-colors duration-200
-    hover:bg-slate-300
-    px-3 py-1.5
-    cursor-pointer
-    button-pop
-    flex items-center gap-x-2
-  "
->
-  {/* SVG ikon */}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth="1.5"
-    stroke="currentColor"
-    className="w-5 h-5 text-[#0069FF]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
-    />
-  </svg>
-  <span>Charts</span>
-</Link>
-
-
-       <Link
-  href="/donate"
+ <Link
+  href="/pricing"
   className="
     text-[#394E6A]
     border border-transparent
@@ -182,23 +134,10 @@ href="/"
     flex items-center gap-x-2
   "
 >
-  {/* SVG ikon */}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth="1.5"
-    stroke="currentColor"
-    className="w-5 h-5 text-[#05AB71]"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-    />
-  </svg>
-  <span>Donate</span>
+  <span>Pricing</span>
 </Link>
+
+
 
       </nav>
       <div className="flex gap-2">

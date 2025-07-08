@@ -1,36 +1,39 @@
 "use client";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 const comments = [
   {
-    username: "@mathgenius",
-    avatar: "/avatars/user1.jpg",
-    comment: "Bu platform tam olarak ihtiyacım olan şeydi. Sınav sürecimde çok yardımcı oldu!",
+    username: "@a_rsalan",
+    avatar: "/avatars/@a_rsalan.jpeg",
+    comment: "I joined your free course and it was amazing I learned a-lot appreciate your time 🤍",
   },
   {
-    username: "@studyqueen",
-    avatar: "/avatars/user2.jpg",
-    comment: "Arayüz çok kullanıcı dostu ve sorular gerçek sınav gibi. Bayıldım!",
+    username: "@taskin_tuana",
+    avatar: "/avatars/@taskin_tuana.jpeg",
+    comment: "They say 'some people are meant to be teachers,' and I never truly understood what that meant until I met Tarık teacher. He is truly born to teach. Thanks for everything Teacher!!",
   },
   {
-    username: "@satready",
-    avatar: "/avatars/user3.jpg",
-    comment: "Soruların açıklamaları harika, yanlış yaptığım yerleri anında anlıyorum.",
+    username: "@thisismerrii",
+    avatar: "/avatars/@thisismerrii.jpeg",
+    comment: "It was my first lesson.Lesson was super clear and well-structured.The quality of the questions really helps reinforce the concepts love how clearly everything is explained💗💗",
   },
   {
-    username: "@elif_oz",
-    avatar: "/avatars/user4.jpg",
-    comment: "Gerçekten Bluebook gibi hissettiriyor, hatta daha iyi bile olabilir.",
+    username: "@omerxkeskin",
+    avatar: "/avatars/@omerxkeskin.jpeg",
+    comment: "Best teacher in the worldd",
   },
   {
-    username: "@kaanworks",
-    avatar: "/avatars/user5.jpg",
-    comment: "Zamanlayıcı özelliği sayesinde kendimi çok daha iyi hazırlıyorum.",
+    username: "@aras.mp4",
+    avatar: "/avatars/@aras.mp4.jpeg",
+    comment: "Thank you for your great help and was wonderful working with you!!",
   },
   {
-    username: "@toptier",
-    avatar: "/avatars/user6.jpg",
-    comment: "Harika bir kaynak, grafiklerle gelişimimi görmek çok motive edici.",
+    username: "@kbeyzacakil",
+    avatar: "/avatars/@kbeyzacakil.jpeg",
+    comment: "Dersimiz çok verimli geçti. Soru ve kelime tahminlerini paylaştı. Seçtiği sorular zorlayıcıydı ama anlatımı ve açıklamaları ile kolay bir hale geldi. Herkesin sorularını özenle cevapladı.Teşekkürler💐",
   },
 ];
 
@@ -41,7 +44,7 @@ const Comments: React.FC = () => {
     infinite: true,
     speed: 500,
     autoplay: true,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 2500,
     slidesToShow: 2,
     slidesToScroll: 1,
     responsive: [
@@ -51,7 +54,7 @@ const Comments: React.FC = () => {
 
   return (
     <section className="py-16 bg-gray-50">
-      <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">Yorumlar</h2>
+      <h2 className="text-2xl font-bold mb-8 text-center text-gray-800">Comments</h2>
       <div className="max-w-5xl mx-auto px-4">
         <Slider {...settings}>
           {comments.map((c, i) => (

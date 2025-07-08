@@ -17,7 +17,7 @@
       <h1 className="text-4xl md:text-5xl font-bold">
         Your Ultimate Digital <span className="text-yellow-400 ">SAT</span>  Question Bank
       </h1>
-      <p className="mt-4 text-lg">More than <strong>12,000</strong> questions</p>
+      <p className="mt-4 text-lg">More than <strong>290</strong> questions</p>
       <div className="mt-6 flex flex-col gap-4 w-full max-w-md">
     <button
     onClick={handleQuestionBankClick}

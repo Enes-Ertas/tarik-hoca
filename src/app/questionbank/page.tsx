@@ -26,7 +26,7 @@ const [refreshKey, setRefreshKey] = useState(0);
 useEffect(() => {
   const protectRoute = async () => {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return router.push("/accounts/login")
+    if (!user) return router.push("/login")
 
     // 1. Referral kontrolü
     const { data: referral, error: referralError } = await supabase

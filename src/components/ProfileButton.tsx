@@ -40,7 +40,7 @@ const ProfileButton: React.FC = () => {
   
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left pl-[8rem]">
       <button
         onClick={handleButtonClick}
         className="inline-flex items-center justify-center bg-gray-200 rounded-full p-4 hover:bg-gray-300 transition button-pop"

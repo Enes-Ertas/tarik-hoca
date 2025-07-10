@@ -63,7 +63,7 @@ useEffect(() => {
                   className="tiktok-embed"
                   cite={url}
                   data-video-id={videoId}
-                  style={{ maxWidth: "100%", minWidth: "600px" }}
+                  style={{ maxWidth: "100%" }}
                 >
                   <section></section>
                 </blockquote>

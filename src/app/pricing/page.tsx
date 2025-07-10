@@ -2,7 +2,7 @@
 
 export default function PricingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#66B3E1] to-[#0077C8] text-white">
       <div className="max-w-3xl mx-auto py-16 px-6 text-center">
         <h1 className="text-4xl font-bold mb-6">
           SAT İngilizce Soru Bankası – <span className="text-yellow-300">$100</span>

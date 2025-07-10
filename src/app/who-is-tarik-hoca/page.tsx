@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 export default function WhoIsTarikHoca() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#66B3E1] to-[#0077C8] text-white">
       {/* Logo + Başlık */}
       <div className="flex flex-col items-center py-12 px-4 text-center max-w-4xl mx-auto">
         <div className="mb-6">

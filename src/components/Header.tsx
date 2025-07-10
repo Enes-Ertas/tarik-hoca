@@ -38,12 +38,18 @@ const Header: React.FC = () => {
   return (
     <header className="bg-[#E3E9F4] py-3 px-6 flex justify-between items-center fixed top-0 left-0 w-full">
 <Link
-href="/"
-   onClick={() => triggerAllButtonPopsRef.current()}
-  className="text-[#394E6A] font-bold text-lg border border-transparent bg-transparent shadow-none outline-current rounded-lg transition-colors duration-200 hover:bg-slate-300 px-3 py-1.5 cursor-pointer button-pop"
+  href="/"
+  onClick={() => triggerAllButtonPopsRef.current()}
+  className="flex items-center gap-0 text-[#394E6A] font-bold text-lg border border-transparent bg-transparent shadow-none outline-current rounded-lg transition-colors duration-200 hover:bg-slate-300 px-3 py-1.5 cursor-pointer button-pop"
 >
+  <img
+    src="/tarik-hoca-logo.png"
+    alt="Tarık Hoca Logo"
+    className="w-15 h-10"
+  />
   Tarık Hoca
 </Link>
+
 
 
       <nav className="hidden md:flex gap-8 text-sm text-[#394E6A]">

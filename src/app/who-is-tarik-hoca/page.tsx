@@ -12,8 +12,8 @@ export default function WhoIsTarikHoca() {
           <Image
             src="/tarik-hoca-logo.png"
             alt="Tarık Hoca Logo"
-            width={100}
-            height={100}
+            width={300}
+            height={300}
             className="rounded-full border border-white shadow-lg"
           />
         </div>

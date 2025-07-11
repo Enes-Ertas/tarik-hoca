@@ -222,10 +222,10 @@ export default function RegisterPage() {
       </div>
 
       <div className="mt-3 text-sm text-gray-700 flex flex-col items-center gap-3 md:flex-row">
-        <Link href="/accounts/login/" className="hover:underline">
+        <Link href="/login" className="hover:underline">
           Login
         </Link>
-        <Link href="/accounts/signup/" className="hover:underline cursor-pointer">
+        <Link href="/register" className="hover:underline cursor-pointer">
           Register
         </Link>
       </div>

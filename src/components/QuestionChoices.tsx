@@ -70,7 +70,7 @@ export default function QuestionChoices({
                     setSelectedOption(opt.letter);
                   }
                 }}
-                className={`w-7 h-7 border-2 rounded-full flex items-center justify-center font-bold ${
+                className={`w-7 aspect-square border-2 rounded-full flex items-center justify-center font-bold shrink-0 ${
                   isDisabled
                     ? "cursor-not-allowed opacity-50"
                     : "cursor-pointer"

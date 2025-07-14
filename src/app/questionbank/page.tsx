@@ -89,7 +89,7 @@ useEffect(() => {
     const { data, error } = await supabase
       .from("questions")
       .select("*")
-      .order("created_at", { ascending: true })
+      .order("id", { ascending: false })
 
     if (error) {
       console.error("Error fetching questions:", error)
@@ -254,7 +254,9 @@ const handleCheckClick = async () => {
 
 
   <div className="bg-white border border-gray-200 text-[#1F2955] p-6 rounded-xl shadow-sm leading-relaxed text-lg mt-6">
-   <p>{questions[currentIndex]?.question_text}</p>
+  <p className="whitespace-pre-line">
+  {questions[currentIndex]?.question_text.replace(/\\n/g, "\n")}
+</p>
   </div>
 </section>
 

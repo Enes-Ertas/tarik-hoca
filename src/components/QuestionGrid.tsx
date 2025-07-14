@@ -41,7 +41,7 @@ useEffect(() => {
     const { data, error } = await supabase
       .from("questions")
       .select("id, difficulty")
-      .order("created_at", { ascending: true })  // ← burayı değiştiriyoruz
+      .order("id", { ascending: false })  // ← burayı değiştiriyoruz
 
     if (error) {
       console.error("Supabase error:", error)

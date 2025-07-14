@@ -26,6 +26,7 @@ const [newQuestion, setNewQuestion] = useState<any>(null)
 const [showAddReferralModal, setShowAddReferralModal] = useState(false)
 const [referralEmail, setReferralEmail] = useState("")
 const [referralCode, setReferralCode] = useState("")
+const [targetPage, setTargetPage] = useState<number | null>(null)
 
 
 
@@ -38,7 +39,7 @@ const fetchQuestions = async (page: number, search: string = '') => {
   let query = supabase
     .from('questions')
     .select('*')
-   .order('created_at', { ascending: false })
+   .order('id', { ascending: false })
     .range(from, to)
 
   if (search) {
@@ -221,6 +222,7 @@ onChange={(e) => {
     <table className="w-full text-sm text-left text-gray-700 table-auto">
       <thead className="bg-gray-100 border-b border-gray-300">
   <tr>
+    <th className="p-3 text-gray-800">No</th>
     <th className="p-3 text-gray-800">ID</th>
     <th className="p-3 text-gray-800">Soru</th>
     <th className="p-3 text-gray-800">Zorluk</th>
@@ -235,8 +237,9 @@ onChange={(e) => {
   </tr>
       </thead>
       <tbody>
-        {questions.map((q) => (
+        {questions.map((q, index) => (
           <tr key={q.id} className="border-t border-gray-200 hover:bg-gray-50">
+      <td className="p-3">{(currentPage - 1) * pageSize + index + 1}</td>
       <td className="p-3">{q.id}</td>
       <td className="p-3 text-gray-700">{q.question_text.slice(0, 100)}...</td>
       <td className="p-3">{q.difficulty}</td>
@@ -297,22 +300,45 @@ onChange={(e) => {
     </table>
   </div>
 
-  <div className="mt-4 flex justify-center gap-4">
+<div className="mt-4 flex flex-wrap justify-center items-center gap-4">
+  <button
+    onClick={() => fetchQuestions(currentPage - 1, searchTerm)}
+    disabled={currentPage === 1}
+    className="px-3 py-1 bg-gray-300 text-gray-800 rounded disabled:opacity-50"
+  >
+    Önceki
+  </button>
+
+  <span className="text-gray-700">Sayfa {currentPage}</span>
+
+  <div className="flex items-center gap-2">
+    <input
+      type="number"
+      min={1}
+      placeholder="Git..."
+      className="w-20 px-2 py-1 border border-gray-300 rounded text-black"
+      onChange={(e) => setTargetPage(Number(e.target.value))}
+    />
     <button
-      onClick={() => fetchQuestions(currentPage - 1, searchTerm)}
-      disabled={currentPage === 1}
-      className="px-3 py-1 bg-gray-300 text-gray-800 rounded disabled:opacity-50"
+      onClick={() => {
+        if (targetPage && targetPage > 0) {
+          fetchQuestions(targetPage, searchTerm)
+        }
+      }}
+      className="px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600"
     >
-      Önceki
-    </button>
-    <span className="text-gray-700">Sayfa {currentPage}</span>
-    <button
-      onClick={() => fetchQuestions(currentPage + 1, searchTerm)}
-      className="px-3 py-1 bg-gray-300 text-gray-800 rounded"
-    >
-      Sonraki
+      Git
     </button>
   </div>
+
+  <button
+    onClick={() => fetchQuestions(currentPage + 1, searchTerm)}
+    className="px-3 py-1 bg-gray-300 text-gray-800 rounded"
+  >
+    Sonraki
+  </button>
+</div>
+
 </div>
 
 {showModal && editingQuestion && (

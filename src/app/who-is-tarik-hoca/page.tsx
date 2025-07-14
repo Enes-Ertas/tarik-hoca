@@ -17,22 +17,23 @@ export default function WhoIsTarikHoca() {
             className="rounded-full border border-white shadow-lg"
           />
         </div>
-        <h1 className="text-4xl font-bold mb-4">Tarık Hoca Kimdir?</h1>
+        <h1 className="text-4xl font-bold mb-4">Who is Tarık Hoca?</h1>
         <p className="text-lg leading-relaxed text-white/90 space-y-4 text-left mt-6">
-          <strong>Merhaba, ben Tarık Cansızoğlu.</strong> İngilizce öğretmeni, SAT sınav uzmanı, matematik eğitmeni ve sağlıklı yaşam savunucusuyum. Eğitimde yalnızca akademik başarıya değil, öğrencinin tüm yönleriyle gelişimine odaklanırım. Bugüne kadar yüzlerce öğrencinin hem sınavlarda hem de hayatta önemli adımlar atmasına rehberlik ettim.
-          <br /><br />
-          Lisans eğitimimi Kocaeli Üniversitesi İngilizce Öğretmenliği bölümünde tamamladım. Lise eğitimimin bir kısmını ise Kanada’nın Toronto şehrinde aldım. Bu süreç bana yalnızca ileri düzey İngilizce kazandırmakla kalmadı, aynı zamanda uluslararası bakış açısı, disiplin ve kültürlerarası farkındalık da sağladı. Toronto’da profesyonel olarak yüzmeyle ilgilendim ve güreşte eyalet birinciliği elde ettim.
-          <br /><br />
-          Sayısal alandaki yetkinliğim ise inşaat mühendisliği eğitimi almamla perçinlendi. Bu altyapı sayesinde özellikle SAT Math alanında öğrencilerime pratik, sistemli ve kavrayıcı bir eğitim sunuyorum.
-          <br /><br />
-          Eğitim anlayışımda her öğrenci özeldir. Bu nedenle öğrenci odaklı bir sistemle ilerler, bireysel farklılıkları dikkate alır ve yakın takip prensibiyle çalışırım. Öğrencilerimin gelişim sürecinde sadece bir öğretmen değil, aynı zamanda bir danışman, motivatör ve yol arkadaşı olarak onların yanındayım.
-          <br /><br />
-          Son altı yılı aşkın süredir özellikle Digital SAT üzerine uzmanlaştım. Bu süre zarfında 400’den fazla öğrenciyle birebir çalıştım. Öğrencilerim Amerika, Kanada, Avrupa ve Türkiye’nin prestijli üniverselerine kabul edildiler.
-          <br /><br />
-          Benimle çalışan öğrenciler yalnızca soru çözmeyi değil, doğru yaşam alışkanlıklarını da öğrenirler. Sağlıklı beslenmenin, fiziksel aktivitenin ve ruhsal dengenin akademik başarıyı nasıl etkilediğini anlatır, öğrencilerimi bilinçlendiririm.
-          <br /><br />
-          Eğer siz de hayalini kurduğunuz üniversiteye giden yolda kendinize güçlü bir rehber arıyorsanız, doğru yerdesiniz.
-        </p>
+  <strong>Hello, I'm Tarık Cansızoğlu.</strong> I am an English teacher, SAT exam specialist, math instructor, and advocate for healthy living. In education, I focus not only on academic success but also on the holistic development of the student. I have guided hundreds of students to take significant steps not only in exams but also in life.
+  <br /><br />
+  I completed my undergraduate studies in English Language Teaching at Kocaeli University. I also spent part of my high school education in Toronto, Canada. This experience not only helped me achieve an advanced level of English, but also provided me with an international perspective, strong discipline, and intercultural awareness. While in Toronto, I swam professionally and earned a provincial championship title in wrestling.
+  <br /><br />
+  My competence in quantitative fields was strengthened by my education in civil engineering. Thanks to this background, I offer my students a practical, structured, and comprehensive approach—especially in the SAT Math section.
+  <br /><br />
+  I believe that every student is unique. That’s why I follow a student-centered approach, taking individual differences into account and working with a principle of close monitoring. Throughout my students’ learning journey, I am not only a teacher but also a mentor, motivator, and companion.
+  <br /><br />
+  For the past six years, I have specialized particularly in the Digital SAT. During this time, I have worked one-on-one with over 400 students. My students have been accepted into prestigious universities in the United States, Canada, Europe, and Turkey.
+  <br /><br />
+  My students don’t just learn how to solve questions—they also develop healthy life habits. I raise awareness about how nutrition, physical activity, and mental balance contribute to academic success.
+  <br /><br />
+  If you're looking for a strong mentor to guide you on your path to your dream university, you're in the right place.
+</p>
+
       </div>
     </div>
   )

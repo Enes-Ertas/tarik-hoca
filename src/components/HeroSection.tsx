@@ -31,9 +31,9 @@
   {/* 🧱 Content */}
   <div className="relative z-20">
     <h1 className="text-4xl md:text-5xl font-bold">
-      Your Ultimate Digital <span className="text-yellow-400 ">SAT</span> Question Bank
+      Master the Digital  <span className="bg-gradient-to-br from-[#66B3E1] to-[#0077C8] bg-clip-text text-transparent">SAT</span> with Tarık Hoca
     </h1>
-    <p className="mt-4 text-lg">More than <strong>290</strong> questions</p>
+    <p className="mt-4 text-lg">Tutored more than <strong>500</strong> students</p>
     <div className="mt-6 flex flex-col gap-4 w-full max-w-md mx-auto">
       <button
         onClick={handleQuestionBankClick}

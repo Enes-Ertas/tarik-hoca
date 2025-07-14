@@ -29,6 +29,9 @@ const [referralCode, setReferralCode] = useState("")
 const [targetPage, setTargetPage] = useState<number | null>(null)
 
 
+useEffect(() => {
+  setTargetPage(currentPage)
+}, [currentPage])
 
 
 const fetchQuestions = async (page: number, search: string = '') => {
@@ -309,15 +312,18 @@ onChange={(e) => {
     Önceki
   </button>
 
-  <span className="text-gray-700">Sayfa {currentPage}</span>
-
   <div className="flex items-center gap-2">
     <input
       type="number"
       min={1}
-      placeholder="Git..."
-      className="w-20 px-2 py-1 border border-gray-300 rounded text-black"
+      value={targetPage ?? currentPage} // ← currentPage'i gösteriyoruz
       onChange={(e) => setTargetPage(Number(e.target.value))}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && targetPage && targetPage > 0) {
+          fetchQuestions(targetPage, searchTerm)
+        }
+      }}
+      className="w-20 px-2 py-1 border border-gray-300 rounded text-black text-center"
     />
     <button
       onClick={() => {
@@ -338,6 +344,8 @@ onChange={(e) => {
     Sonraki
   </button>
 </div>
+
+
 
 </div>
 

@@ -177,7 +177,7 @@ useEffect(() => {
       .select("answer_type")
       .eq("user_id", userId)
       .eq("question_id", currentQuestionId)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error("❌ Failed to fetch answer_type:", error.message || error);

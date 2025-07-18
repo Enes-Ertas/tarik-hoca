@@ -442,9 +442,10 @@ const handleCheckClick = async () => {
         ✕
       </button>
       <h2 className="text-xl font-bold mb-4 ">Explanation</h2>
-      <p className="text-sm text-[#1F2955] max-h-[70vh] overflow-y-auto pr-2 leading-6 ">
-        {questions[currentIndex]?.explanation}
-      </p>
+<p className="text-sm text-[#1F2955] max-h-[70vh] overflow-y-auto pr-2 leading-6 whitespace-pre-line">
+  {questions[currentIndex]?.explanation.replace(/\\n/g, "\n")}
+</p>
+
     </div>
   </div>
 )}

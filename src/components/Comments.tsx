@@ -35,6 +35,37 @@ const comments = [
     avatar: "/avatars/@kbeyzacakil.jpeg",
     comment: "Dersimiz çok verimli geçti. Soru ve kelime tahminlerini paylaştı. Seçtiği sorular zorlayıcıydı ama anlatımı ve açıklamaları ile kolay bir hale geldi. Herkesin sorularını özenle cevapladı.Teşekkürler💐",
   },
+    {
+    username: "@notjlingz",
+    avatar: "/avatars/@notjlingz.jpeg",
+    comment: "Question bankteki sorularin aynisi cikti sinavda matematikte ozellikle bazilarinin sayilari bile degisik degildi matematik 1 ay calismadim nerdeyse 650 yaptim",
+  },
+    {
+    username: "@ahmethamdiozbey",
+    avatar: "/avatars/@ahmethamdiozbey.jpeg",
+    comment: "Tarık hocamla yeni tanıştık gerçekten çok iyi bir yol gösterici kesinlikle çok yardım sever çok güzel gidiyor",
+  },
+    {
+    username: "@tanemgulerr",
+    avatar: "/avatars/@tanemgulerr.jpeg",
+    comment: "Hocam sizin sayenizde 4 5 soru rahat yapmisimdir sadece bir haftadir izliyorum cok tesekkurler🙏🏼🙏🏼",
+  },
+    {
+    username: "@ardakaan.s",
+    avatar: "/avatars/@ardakaan.s.jpeg",
+    comment: "Tarık hocayla kısa süre önce tanışmamıza rağmen benim için çok yararlı oldu herkese tavsiye ederim çok teşekkür ederim yardımınız için hocam.",
+  },
+      {
+    username: "@notjlingz",
+    avatar: "/avatars/@notjlingz.jpeg",
+    comment: "Ders almamama ragmen kendi ogrencisi gibi davrandi,her firsatta yardim etti,ucretsiz dersleri cok isime yaradi, tiktoktaki soru cozum videolari cok fazla yardimci etti hepsini izlemenizi tavsiye ederim ayrica cok kibar cok iyi bir insan 1 ay gibi kisa bi surede istedigim puani aldim tarik hocam sayesinde",
+  },
+        {
+    username: "@userz70n10vzb7",
+    avatar: "/avatars/@userz70n10vzb7.jpeg",
+    comment: "Tarık hoca ile bir tanışma dersi yaptık, bir öngörüşme gibi, açtığı sorular çok kaliteli ve sınava yakındı, çok samimi ve içten bir hoca kesinlikle, herkese tavsiye ederim tam safe place 🥳",
+  },
+
 ];
 
 const Comments: React.FC = () => {

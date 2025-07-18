@@ -6,22 +6,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 const videoUrls = [
-  "https://www.tiktok.com/@tarik_hoca/video/7477519833676958984?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7476963327055252743?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7476962236540390664?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7477564574170877202?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7477166583245278471?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7476962688032115976?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7476963770942721298?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7478691357083569416?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7478136792575724818?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7477509077053066514?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7477173489422617864?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7477169400324410632?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7477174441118567688?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7476964440282336519?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7484182895066729736?lang=en",
-  "https://www.tiktok.com/@tarik_hoca/video/7513293338343148807?lang=en",
+  "https://www.tiktok.com/@tarik_hoca/video/7476962236540390664?_r=1&_t=ZS-8y2UvQMqkEs",
+  "https://www.tiktok.com/@tarik_hoca/video/7476964440282336519?_r=1&_t=ZS-8y2UzdMghj6",
+  "https://www.tiktok.com/@tarik_hoca/video/7477564574170877202?_r=1&_t=ZS-8y2V4ntpccE",
+  "https://www.tiktok.com/@tarik_hoca/video/7476963770942721298?_r=1&_t=ZS-8y2V9XnRtxA",
+  "https://www.tiktok.com/@tarik_hoca/video/7484182895066729736?_r=1&_t=ZS-8y2VC2mhctr"
+
+
 ];
 
 export default function StudentResults() {
@@ -53,7 +44,6 @@ useEffect(() => {
           navigation
           spaceBetween={20}
           slidesPerView={1}
-          loop
         >
           {videoUrls.map((url, idx) => {
             const videoId = url.split("/").pop();
